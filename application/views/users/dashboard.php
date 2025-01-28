@@ -7,10 +7,15 @@
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
-      <h1>Welcome, <?php echo $this->session->userdata('username'); ?>!</h1>
-      <a href="<?php echo site_url('users/edit_profile'); ?>" class="btn btn-primary">Edit Profile</a>
-      <a href="<?php echo site_url('users/logout'); ?>" class="btn btn-danger">Logout</a>
+  <?php $this->load->view('partials/navbar.php'); ?>
+    <div class="container pt-5 mt-4">
+      <div class="d-flex justify-content-center">
+        <div class="card w-50 border-light-subtle rounded-3">
+          <div class="card-body">
+            Welcome back, <?php echo $this->session->userdata('fullname'); ?>!
+          </div>
+        </div>
+      </div>
     </div>
     <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
   </body>

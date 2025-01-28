@@ -40,6 +40,7 @@ class Users extends CI_Controller {
       $this->session->set_userdata('user_id', $user->id);
       $this->session->set_userdata('username', $user->username);
       $this->session->set_userdata('fullname', $user->fullname);
+      $this->session->set_userdata('email', $user->email);
 
       if ($remember) {
         set_cookie('remember_username', $user->username, 86400 * 30); // 30 days
@@ -86,43 +87,54 @@ class Users extends CI_Controller {
 
     $data = array(
       'fullname' => $this->input->post('fullname'),
+      'email' => $this->input->post('email'),
     );
+
+    $this->User_model->update_user($this->session->userdata('user_id'), $data);
+
+    $this->session->set_userdata('fullname', $data['fullname']);
+    $this->session->set_userdata('email', $data['email']);
+
+    $this->session->set_flashdata('success', 'Profile updated successfully');
+    redirect('users/edit_profile');
+  }
+
+  public function update_password() {
+    if (!$this->session->userdata('user_id')) {
+      redirect('users/login');
+    }
 
     $current_password = $this->input->post('current_password');
     $new_password = $this->input->post('new_password');
     $confirm_password = $this->input->post('confirm_password');
 
-    if ($current_password || $new_password || $confirm_password) {
-      if (!$current_password) {
-        $this->session->set_flashdata('error', 'Current password is required');
-        redirect('users/edit_profile');
-      }
-
-      $user = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
-
-      if (!password_verify($current_password, $user->password)) {
-        $this->session->set_flashdata('error', 'Current password is incorrect');
-        redirect('users/edit_profile');
-      }
-
-      if (strlen($new_password) < 6) {
-        $this->session->set_flashdata('error', 'New password must be at least 6 characters');
-        redirect('users/edit_profile');
-      }
-
-      if ($new_password !== $confirm_password) {
-        $this->session->set_flashdata('error', 'New password and confirm password do not match');
-        redirect('users/edit_profile');
-      }
-
-      $data['password'] = password_hash($new_password, PASSWORD_BCRYPT);
+    if (!$current_password || !$new_password || !$confirm_password) {
+      $this->session->set_flashdata('error', 'All password fields are required');
+      redirect('users/edit_profile');
     }
+
+    $user = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
+
+    if (!password_verify($current_password, $user->password)) {
+      $this->session->set_flashdata('error', 'Current password is incorrect');
+      redirect('users/edit_profile');
+    }
+
+    if (strlen($new_password) < 6) {
+      $this->session->set_flashdata('error', 'New password must be at least 6 characters');
+      redirect('users/edit_profile');
+    }
+
+    if ($new_password !== $confirm_password) {
+      $this->session->set_flashdata('error', 'New password and confirm password do not match');
+      redirect('users/edit_profile');
+    }
+
+    $data['password'] = password_hash($new_password, PASSWORD_BCRYPT);
 
     $this->User_model->update_user($this->session->userdata('user_id'), $data);
 
-    $this->session->set_userdata('fullname', $data['fullname']);
-
-    $this->session->set_flashdata('success', 'Profile updated successfully');
+    $this->session->set_flashdata('success', 'Password updated successfully');
     redirect('users/edit_profile');
   }
 }

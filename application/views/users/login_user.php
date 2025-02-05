@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,10 @@
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
   <body>
-    <section class="bg-light py-3 py-md-5">
+    <div class="d-flex justify-content-end py-3">
+      <i id="darkModeToggle" class="bi bi-moon-stars-fill ms-auto me-4" style="cursor: pointer;"></i>
+    </div>
+    <section class="py-3 py-md-5">
       <div class="container">
         <?php if ($this->session->flashdata('error')): ?>
           <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -23,10 +26,10 @@
           </div>
         <?php endif; ?>
         <div class="d-flex justify-content-center">
-          <div class="card text-center col-lg-4 mt-5 border border-light-subtle rounded-3 shadow-sm">
+          <div class="card text-center col-lg-4 mt-5">
             <div class="card-body p-md-4 p-xl-5">
-              <h3 class="fw-bold fst-italic mt-3">RAPINDO</h3>
-              <p class="text-secondary fw-normal mb-4">Sign in to your account</p>
+              <h3 class="fw-bold fst-italic mt-3 text-body">RAPINDO</h3>
+              <p class="text-body-secondary fw-normal mb-4">Sign in to your account</p>
               <form method="post" action="<?php echo site_url('users/authenticate'); ?>" id="loginForm">
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInputUsername" name="username" placeholder="username" value="<?php echo $this->session->flashdata('username') ?: get_cookie('remember_username'); ?>">
@@ -40,7 +43,7 @@
                 <div class="d-flex justify-content-between mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="remember" name="remember" <?php echo get_cookie('remember_username') ? 'checked' : ''; ?>>
-                    <label class="form-check-label text-secondary" for="remember">
+                    <label class="form-check-label text-body-secondary" for="remember">
                       Remember me
                     </label>
                   </div>
@@ -91,6 +94,37 @@
           loginButton.disabled = true;
           loginButtonText.classList.add('d-none');
           loginButtonSpinner.classList.remove('d-none');
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var darkModeToggle = document.getElementById('darkModeToggle');
+        var htmlElement = document.documentElement;
+
+        // Muat preferensi mode dari localStorage
+        if (localStorage.getItem('theme') === 'dark') {
+          htmlElement.setAttribute('data-bs-theme', 'dark');
+          darkModeToggle.classList.remove('bi-moon-stars-fill');
+          darkModeToggle.classList.add('bi-sun-fill');
+        } else {
+          htmlElement.setAttribute('data-bs-theme', 'light');
+          darkModeToggle.classList.remove('bi-sun-fill');
+          darkModeToggle.classList.add('bi-moon-stars-fill');
+        }
+
+        darkModeToggle.addEventListener('click', function () {
+          if (htmlElement.getAttribute('data-bs-theme') === 'dark') {
+            htmlElement.setAttribute('data-bs-theme', 'light');
+            darkModeToggle.classList.remove('bi-sun-fill');
+            darkModeToggle.classList.add('bi-moon-stars-fill');
+            localStorage.setItem('theme', 'light');
+          } else {
+            htmlElement.setAttribute('data-bs-theme', 'dark');
+            darkModeToggle.classList.remove('bi-moon-stars-fill');
+            darkModeToggle.classList.add('bi-sun-fill');
+            localStorage.setItem('theme', 'dark');
+          }
         });
       });
     </script>

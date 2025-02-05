@@ -53,10 +53,20 @@ $route['default_controller'] = 'users/login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Custom routes for user authentication
+// Custom routes for user & authentication
 $route['register'] = 'users/create';
 $route['login'] = 'users/login';
 $route['logout'] = 'users/logout';
 $route['dashboard'] = 'users/dashboard';
+$route['profile'] = 'users/edit_profile';
+$route['users/create'] = 'users/create';
 $route['users/store'] = 'users/store';
+$route['users/list'] = 'users/index';
 $route['users/authenticate'] = 'users/authenticate';
+
+// custom routes for permissions
+$route['permissions/create'] = 'permissions/create';
+$route['permissions/store'] = 'permissions/store';
+
+// Custom route for error 403
+$route['errors/error_403'] = 'errors/error_403';

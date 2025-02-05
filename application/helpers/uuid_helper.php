@@ -1,4 +1,6 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 if (!function_exists('generate_uuid')) {
   function generate_uuid() {
     if (function_exists('com_create_guid')) {

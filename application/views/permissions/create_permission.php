@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create User</title>
+    <title>Create Permission</title>
     <link href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
@@ -37,30 +37,18 @@
       <div class="d-flex justify-content-center">
         <div class="card col-md-5 rounded-4">
           <div class="card-body p-md-4 p-xl-5">
-            <form method="post" action="<?php echo site_url('users/store'); ?>">
-              <h4 class="fs-5 text-body">Create a account</h4>
-              <p class="text-body-secondary">Create a new user account.</p>
+            <form method="post" action="<?php echo site_url('permissions/store'); ?>">
+              <h4 class="fs-5 text-body">Create a permission</h4>
+              <p class="text-body-secondary">Create a new permission access.</p>
               <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="<?php echo set_value('username'); ?>" required>
+                <label for="name" class="form-label">Permission Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="<?php echo set_value('name'); ?>" required>
               </div>
               <div class="mb-3">
-                <label for="fullname" class="form-label">Fullname</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo set_value('fullname'); ?>" required>
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3"><?php echo set_value('description'); ?></textarea>
               </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email'); ?>" required>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-              </div>
-              <div class="mb-3">
-                <label for="confirm_password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Create account</button>
+              <button type="submit" class="btn btn-primary">Create Permission</button>
             </form>
           </div>
         </div>

@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create User</title>
-    <link href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-body-tertiary">
     <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container pt-5 mt-4">
       <?php if ($this->session->flashdata('success')): ?>
@@ -35,12 +35,13 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card col-md-5 rounded-4">
+        <div class="card col-md-6 col-lg-5 border-0 bg-body shadow-sm mt-5">
           <div class="card-body p-md-4 p-xl-5">
+            <a href="<?php echo site_url('users/list'); ?>" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Back</a>
             <form method="post" action="<?php echo site_url('users/store'); ?>">
-              <h4 class="fs-5 text-body">Create a account</h4>
-              <p class="text-body-secondary">Create a new user account.</p>
-              <div class="mb-3">
+              <h5 class="card-title"><i class="bi bi-person-fill-add text-primary"></i> Create a New User</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">Fill in the details below to create a new user account</h6>
+              <div class="mb-3 mt-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" value="<?php echo set_value('username'); ?>" required>
               </div>
@@ -52,6 +53,22 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email'); ?>" required>
               </div>
+              <!--  -->
+              <div class="mb-3">
+                <label for="new_password" class="form-label">New Password</label>
+                <div class="position-relative">
+                  <input type="password" class="form-control" id="new_password" name="new_password" minlength="6" required>
+                  <i class="bi bi-eye position-absolute translate-middle-y top-50 end-0 me-3 toggle-password" style="cursor: pointer;"></i>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <div class="position-relative">
+                  <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                  <i class="bi bi-eye position-absolute translate-middle-y top-50 end-0 me-3 toggle-password" style="cursor: pointer;"></i>
+                </div>
+              </div>
+              <!--  -->
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
@@ -60,13 +77,15 @@
                 <label for="confirm_password" class="form-label">Confirm Password</label>
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
               </div>
-              <button type="submit" class="btn btn-primary">Create account</button>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary btn-lg mt-3">Create account</button>
+              </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-    <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
     <script>
       var toastElements = document.querySelectorAll('.toast');
       toastElements.forEach(function (toastElement) {

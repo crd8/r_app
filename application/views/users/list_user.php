@@ -8,16 +8,22 @@
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/dataTables.bootstrap5.min.css'); ?>" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-body-tertiary">
   <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container pt-5 mt-4">
       <div class="d-flex justify-content-center">
-        <div class="card w-100 rounded-4">
-          <div class="card-body text-body-secondary p-md-4 p-xl-5">
-            <h4 class="card-title"><i class="bi bi-people-fill text-primary"></i> List of users account</h4>
-            <p class="card-text">List of active users account in system</p>
-            <div class="table-responsive">
-              <table class="table table-hover table-bordered align-middle" id="dataTablesUsers">
+        <div class="card bg-body col-12 border-0 shadow-sm mt-5">
+          <div class="card-body text-body p-md-4 p-xl-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h5 class="card-title"><i class="bi bi-people-fill text-primary"></i> List of users account</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">List of active users account in system</h6>
+              </div>
+              <a href="<?php echo site_url('users/create'); ?>" class="btn btn-secondary"><i class="bi bi-person-add"></i> Create User</a>
+            </div>
+            <hr>
+            <div class="table-responsive bg-body-tertiary p-2 rounded-2">
+              <table class="table table-hover align-middle" id="dataTablesUsers">
                 <thead>
                   <tr>
                     <th class="text-uppercase" scope="col">Fullname</th>
@@ -38,8 +44,12 @@
                     <td><?php echo date('d F Y, H:i:s', strtotime($user->created_at)); ?></td>
                     <td><?php echo date('d F Y, H:i:s', strtotime($user->updated_at)); ?></td>
                     <td>
-                      <small><a href="" class="fw-bold link-primary text-decoration-none me-2">EDIT</a></small>
-                      <small><a href="" class="fw-bold link-primary text-decoration-none">DELETE</a></small>
+                      <a href="" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <i class="bi bi-pencil-square text-warning-emphasis"></i>
+                      </a>
+                      <a href="" class="link-primary text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                        <i class="bi bi-trash text-danger-emphasis"></i>
+                      </a>
                     </td>
                   </tr>
                   <?php endforeach; ?>
@@ -57,6 +67,11 @@
     <script>
       $(document).ready(function() {
         $('#dataTablesUsers').DataTable();
+      });
+
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
       });
     </script>
   </body>

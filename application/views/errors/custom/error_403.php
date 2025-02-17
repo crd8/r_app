@@ -7,11 +7,11 @@
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-body-tertiary">
     <div class="container pt-5 mt-4">
       <div class="d-flex justify-content-center">
-        <div class="card w-50">
-          <div class="card-body text-body-secondary text-center">
+        <div class="card col-10 col-sm-6 col-lg-4 border-0 bg-body shadow-sm mt-5">
+          <div class="card-body text-body-secondary text-center p-md-4 p-xl-5">
             <h4 class="card-title"><i class="bi bi-shield-lock-fill text-danger"></i> 403 Forbidden</h4>
             <p class="card-text">You do not have permission to access this page.</p>
             <p class="card-text">Please contact the administrator to request the necessary permissions.</p>

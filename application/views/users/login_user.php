@@ -7,7 +7,7 @@
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-body-tertiary">
     <div class="d-flex justify-content-end py-3">
       <i id="darkModeToggle" class="bi bi-moon-stars-fill ms-auto me-4" style="cursor: pointer;"></i>
     </div>
@@ -26,8 +26,8 @@
           </div>
         <?php endif; ?>
         <div class="d-flex justify-content-center">
-          <div class="card text-center col-lg-4 mt-5">
-            <div class="card-body p-md-4 p-xl-5">
+          <div class="card text-center col-10 col-sm-10 col-lg-4 border-0 bg-body shadow-sm mt-5">
+            <div class="card-body p-4 p-md-4 p-xl-5 text-body-secondary">
               <h3 class="fw-bold fst-italic mt-3 text-body">RAPINDO</h3>
               <p class="text-body-secondary fw-normal mb-4">Sign in to your account</p>
               <form method="post" action="<?php echo site_url('users/authenticate'); ?>" id="loginForm">

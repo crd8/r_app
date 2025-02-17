@@ -36,10 +36,10 @@
       <?php endif; ?>
       <div class="d-flex justify-content-center">
         <div class="card col-md-5 rounded-4">
-          <div class="card-body p-md-4 p-xl-5">
+          <div class="card-body p-md-4 p-xl-5 text-body-secondary">
             <form method="post" action="<?php echo site_url('permissions/store'); ?>">
-              <h4 class="fs-5 text-body">Create a permission</h4>
-              <p class="text-body-secondary">Create a new permission access.</p>
+              <h4 class="card-title"><i class="bi bi-shield-lock-fill text-primary"></i></i> Create a permission</h4>
+              <p class="card-text">Create a new permission access.</p>
               <div class="mb-3">
                 <label for="name" class="form-label">Permission Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo set_value('name'); ?>" required>

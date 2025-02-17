@@ -25,9 +25,9 @@
       <?php if ($this->session->flashdata('error')): ?>
         <div class="toast-container position-fixed top-0 end-0 p-3">
           <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-              <div class="toast-body">
-                <?php echo $this->session->flashdata('error'); ?>
+            <div class="d-flex align-items-center">
+              <div class="toast-body d-flex align-items-center">
+              <i class="bi bi-x-circle fs-3 me-2"></i> <span><?php echo $this->session->flashdata('error'); ?></span>
               </div>
               <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -37,10 +37,10 @@
       <div class="d-flex justify-content-center">
         <div>
           <div class="card mb-3 rounded-4">
-            <div class="card-body p-md-4 p-xl-5">
+            <div class="card-body p-md-4 p-xl-5 text-body-secondary">
               <form method="post" action="<?php echo site_url('users/update_profile'); ?>" id="profileForm">
-                <h4 class="fs-5 text-body">Profile Information</h4>
-                <p class="text-body-secondary">Update your account's profile information and email address.</p>
+                <h4 class="card-title"><i class="bi bi-person-vcard-fill text-info"></i> Profile Information</h4>
+                <p class="card-text">Update your account's profile information and email address.</p>
                 <div class="mb-3">
                   <label for="fullname" class="form-label">Fullname</label>
                   <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo $this->session->userdata('fullname'); ?>" required>
@@ -57,10 +57,10 @@
             </div>
           </div>
           <div class="card rounded-4">
-            <div class="card-body p-md-4 p-xl-5">
+            <div class="card-body p-md-4 p-xl-5 text-body-secondary">
               <form method="post" action="<?php echo site_url('users/update_password'); ?>" id="passwordForm">
-                <h4 class="fs-5 text-body">Update Password</h4>
-                <p class="text-body-secondary">Ensure your account is using a long, random password to stay secure</p>
+                <h4 class="card-title"><i class="bi bi-key-fill text-primary"></i> Update Password</h4>
+                <p class="card-text">Ensure your account is using a long, random password to stay secure.</p>
                 <div class="mb-3">
                   <label for="current_password" class="form-label">Current Password</label>
                   <div class="position-relative">

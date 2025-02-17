@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top bg-body-tertiary border-bottom border-body-secondary">
+<nav class="navbar fixed-top bg-body shadow-sm">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -20,12 +20,11 @@
           <?php echo $initials; ?>
         </div>
       </a>
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li class="px-3 py-2">
+      <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+        <li class="px-3 py-2 bg-body-tertiary">
           <p class="mb-0 fw-bold text-primary"><?php echo $this->session->userdata('fullname'); ?></p>
           <p class="mb-0 text-muted text-secondary"><?php echo $this->session->userdata('email'); ?></p>
         </li>
-        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?php echo site_url('profile'); ?>">Profile</a></li>
         <li><a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sign out</a></li>
       </ul>
@@ -43,8 +42,8 @@
             <a class="nav-link <?php echo ($this->uri->segment(1) == 'permissions') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('permissions/create'); ?>">Permissions</a>
             <?php
               $permissions = $this->session->userdata('permissions');
-              $list_users_permission_id = $this->Permission_model->get_permission_id('user list'); // Ambil ID permission untuk list users
-              if (in_array($list_users_permission_id, $permissions)): // Periksa apakah pengguna memiliki izin
+              $list_users_permission_id = $this->Permission_model->get_permission_id('user list');
+              if (in_array($list_users_permission_id, $permissions)):
             ?>
               <a class="nav-link <?php echo ($this->uri->segment(1) == 'users') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('users/list'); ?>">Users</a>
             <?php endif; ?>

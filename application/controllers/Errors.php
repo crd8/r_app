@@ -11,5 +11,10 @@ class Errors extends CI_Controller {
     $this->output->set_status_header('403');
     $this->load->view('errors/custom/error_403');
   }
+
+  public function error_404() {
+    $this->output->set_status_header('404');
+    $this->load->view('errors/custom/error_404');
+  }
 }
 ?>

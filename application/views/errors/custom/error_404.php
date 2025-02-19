@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>403 Forbidden</title>
+    <title>404 Not Found</title>
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
@@ -12,9 +12,9 @@
       <div class="d-flex justify-content-center">
         <div class="card col-10 col-sm-6 col-lg-4 border-0 bg-body shadow-sm mt-5">
           <div class="card-body text-body-secondary text-center p-md-4 p-xl-5">
-            <h4 class="card-title"><i class="bi bi-shield-lock-fill text-danger"></i> 403 Forbidden</h4>
-            <p class="card-text">You do not have permission to access this page.</p>
-            <p class="card-text">Please contact the administrator to request the necessary permissions.</p>
+            <h4 class="card-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 404 Not Found</h4>
+            <p class="card-text">The page you are looking for could not be found.</p>
+            <p class="card-text">Please check the URL or return to the homepage.</p>
             <a href="javascript:history.back()" class="btn btn-primary"><i class="bi bi-arrow-left-circle-fill"></i> Go Back</a>
           </div>
         </div>

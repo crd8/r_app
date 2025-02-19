@@ -53,11 +53,10 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email'); ?>" required>
               </div>
-              <!--  -->
               <div class="mb-3">
-                <label for="new_password" class="form-label">New Password</label>
+                <label for="password" class="form-label">Password</label>
                 <div class="position-relative">
-                  <input type="password" class="form-control" id="new_password" name="new_password" minlength="6" required>
+                  <input type="password" class="form-control" id="password" name="password" minlength="6" required>
                   <i class="bi bi-eye position-absolute translate-middle-y top-50 end-0 me-3 toggle-password" style="cursor: pointer;"></i>
                 </div>
               </div>
@@ -67,15 +66,6 @@
                   <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                   <i class="bi bi-eye position-absolute translate-middle-y top-50 end-0 me-3 toggle-password" style="cursor: pointer;"></i>
                 </div>
-              </div>
-              <!--  -->
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-              </div>
-              <div class="mb-3">
-                <label for="confirm_password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
               </div>
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg mt-3">Create account</button>
@@ -91,6 +81,21 @@
       toastElements.forEach(function (toastElement) {
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
+      });
+      var togglePasswordIcons = document.querySelectorAll('.toggle-password');
+      togglePasswordIcons.forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var input = icon.previousElementSibling;
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+          } else {
+            input.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+          }
+        });
       });
     </script>
   </body>

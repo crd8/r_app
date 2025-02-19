@@ -8,6 +8,12 @@ class User_model extends CI_Model {
     return $query->result();
   }
 
+  public function get_logged_in_users() {
+    $this->db->where('is_logged_in', TRUE);
+    $query = $this->db->get('users');
+    return $query->result();
+  }
+
   public function insert_user($data) {
     $this->db->insert('users', $data);
   }
@@ -33,6 +39,19 @@ class User_model extends CI_Model {
   public function update_user($id, $data) {
     $this->db->where('id', $id);
     $this->db->update('users', $data);
+  }
+  
+  public function delete_user($id) {
+    $this->db->where('id', $id);
+    $this->db->delete('users');
+  }
+  
+  public function update_failed_attempts($username, $attempts, $lock_time = null) {
+    $this->db->where('username', $username);
+    $this->db->update('users', [
+      'failed_attempts' => $attempts,
+      'lock_time' => $lock_time
+    ]);
   }
 }
 ?>

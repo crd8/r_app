@@ -181,12 +181,18 @@ class Users extends CI_Controller {
     if (password_verify($password, $user->password)) {
       $this->User_model->update_user($user->id, ['failed_attempts' => 0, 'lock_time' => null]);
 
-      $this->session->set_userdata([
-        'user_id' => $user->id,
-        'username' => $user->username,
-        'fullname' => $user->fullname,
-        'email' => $user->email
-      ]);
+      $session_data = [
+        'session_id' => session_id(),
+        'user_id'    => $user->id,
+        'username'   => $user->username,
+        'fullname'   => $user->fullname,
+        'email'      => $user->email,
+      ];
+      $this->session->set_userdata($session_data);
+
+      $this->db->where('id', session_id())->update('ci_sessions', ['user_id' => $user->id]);
+
+      $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
 
       $permissions = $this->Permission_model->get_user_permissions($user->id);
       $this->session->set_userdata('permissions', array_column($permissions, 'permission_id'));
@@ -214,26 +220,53 @@ class Users extends CI_Controller {
     }
   }
 
-
   public function dashboard() {
     if (!$this->session->userdata('user_id')) {
       redirect('login');
     }
   
     $data['logged_in_users'] = $this->User_model->get_logged_in_users();
+
     $this->load->view('users/dashboard', $data);
   }
 
   public function logout() {
     $user_id = $this->session->userdata('user_id');
-    $this->session->unset_userdata('user_id');
-    $this->session->unset_userdata('username');
-    $this->session->unset_userdata('fullname');
-    $this->session->sess_destroy();
-  
+
+    if (!$user_id) {
+      redirect('login');
+    }
+
+    $this->db->where('user_id', $user_id)->delete('ci_sessions');
+    $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
+
     $this->User_model->update_user($user_id, ['is_logged_in' => FALSE]);
-  
+
+    $this->session->sess_destroy();
+
     redirect('login');
+  }
+
+  public function force_logout($id) {
+    $user = $this->User_model->get_user_by_id($id);
+
+    if (!$user || $user->is_logged_in == FALSE) {
+      $this->session->set_flashdata('error', 'User is already logged out or does not exist.');
+      redirect('dashboard');
+    }
+
+    $this->db->where('user_id', $id)->delete('ci_sessions');
+    $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
+
+    $this->User_model->update_user($id, ['is_logged_in' => FALSE]);
+
+    if ($this->session->userdata('user_id') == $id) {
+      $this->session->sess_destroy();
+    }
+
+    $this->session->set_flashdata('success', 'User has been forcibly logged out.');
+
+    redirect('dashboard');
   }
 
   public function edit_profile() {

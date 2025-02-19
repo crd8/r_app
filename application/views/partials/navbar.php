@@ -21,10 +21,11 @@
         </div>
       </a>
       <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
-        <li class="px-3 py-2 bg-body-tertiary">
+        <li class="px-3 py-2">
           <p class="mb-0 fw-bold text-primary"><?php echo $this->session->userdata('fullname'); ?></p>
           <p class="mb-0 text-muted text-secondary"><?php echo $this->session->userdata('email'); ?></p>
         </li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?php echo site_url('profile'); ?>">Profile</a></li>
         <li><a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sign out</a></li>
       </ul>

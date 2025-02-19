@@ -58,7 +58,7 @@
                       <?php echo $user->username; ?> (<?php echo $user->fullname; ?>)
                     </div>
                     <!-- Tombol Force Logout -->
-                    <a href="<?php echo site_url('admin/force_logout/' . $user->user_id); ?>" class="btn btn-danger btn-sm">Force Logout</a>
+                    <a href="<?php echo site_url('users/force_logout/' . $user->id); ?>" class="btn btn-danger btn-sm">Force Logout</a>
                   </li>
                 <?php endforeach; ?>
               </ul>

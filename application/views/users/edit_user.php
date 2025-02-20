@@ -29,6 +29,7 @@
             <form method="post" action="<?php echo site_url('users/update/' . $user->id); ?>">
               <h5 class="card-title"><i class="bi bi-person-fill text-primary"></i> Edit User</h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">Update the details below to edit the user account</h6>
+              
               <div class="mb-3 mt-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" value="<?php echo set_value('username', $user->username); ?>" required>
@@ -49,6 +50,30 @@
                 <label for="confirm_password" class="form-label">Confirm Password</label>
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password">
               </div>
+              
+              <!-- Bagian untuk mengatur permission -->
+              <div class="mb-3">
+                <label class="form-label">Permissions</label>
+                <div class="border p-2 rounded">
+                  <?php foreach ($all_permissions as $permission): ?>
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        id="permission-<?php echo $permission->id; ?>" 
+                        name="permissions[]" 
+                        value="<?php echo $permission->id; ?>"
+                        <?php echo (in_array($permission->id, $user_permissions)) ? 'checked' : ''; ?>
+                      >
+                      <label class="form-check-label" for="permission-<?php echo $permission->id; ?>">
+                        <?php echo $permission->name; ?>
+                      </label>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+              <!-- End Bagian Permissions -->
+              
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg mt-3">Update account</button>
               </div>

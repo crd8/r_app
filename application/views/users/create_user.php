@@ -37,7 +37,7 @@
       <div class="d-flex justify-content-center">
         <div class="card col-md-6 col-lg-5 border-0 bg-body shadow-sm mt-5">
           <div class="card-body p-md-4 p-xl-5">
-            <a href="<?php echo site_url('users/list'); ?>" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Back</a>
+            <a href="<?php echo site_url('users/list'); ?>" class="btn btn-sm btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Back</a>
             <form method="post" action="<?php echo site_url('users/store'); ?>">
               <h5 class="card-title"><i class="bi bi-person-fill-add text-primary"></i> Create a New User</h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">Fill in the details below to create a new user account</h6>

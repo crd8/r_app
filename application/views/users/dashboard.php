@@ -18,9 +18,9 @@
               <h5 class="card-title">Your Permissions</h5>
               <ul class="list-group">
                 <?php
-                  $permissions = $this->session->userdata('permissions');
-                  if (!empty($permissions)):
-                    foreach ($permissions as $permission_id):
+                  $session_permissions = $this->session->userdata('permissions');
+                  if (!empty($session_permissions)):
+                    foreach ($session_permissions as $permission_id):
                       $permission_name = $this->Permission_model->get_permission_name($permission_id);
                     ?>
                       <li class="list-group-item"><span class="badge text-bg-primary"><?php echo $permission_name; ?></span> | <?php echo $permission_id; ?></li>
@@ -57,8 +57,13 @@
                       </div>
                       <?php echo $user->username; ?> (<?php echo $user->fullname; ?>)
                     </div>
-                    <!-- Tombol Force Logout -->
-                    <a href="<?php echo site_url('users/force_logout/' . $user->id); ?>" class="btn btn-danger btn-sm">Force Logout</a>
+                    <?php
+                      $session_permissions = $this->session->userdata('permissions');
+                      $list_users_permission_id = $this->Permission_model->get_permission_id('force logout');
+                      if (in_array($list_users_permission_id, $session_permissions)):
+                    ?>
+                    <a href="<?php echo site_url('users/force_logout/' . $user->id); ?>" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-left"></i> Force Logout</a>
+                    <?php endif; ?>
                   </li>
                 <?php endforeach; ?>
               </ul>

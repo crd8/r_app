@@ -18,9 +18,9 @@ class Users extends CI_Controller {
       redirect('login');
     }
 
-    $list_users_permission_id = $this->Permission_model->get_permission_id('user list');
+    $user_list_permission_id = $this->Permission_model->get_permission_id('user list');
 
-    if (!in_array($list_users_permission_id, $this->session->userdata('permissions'))) {
+    if (!in_array($user_list_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
 
@@ -33,9 +33,9 @@ class Users extends CI_Controller {
       redirect('login');
     }
 
-    $list_users_permission_id = $this->Permission_model->get_permission_id('user create');
+    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
 
-    if (!in_array($list_users_permission_id, $this->session->userdata('permissions'))) {
+    if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
 
@@ -43,6 +43,12 @@ class Users extends CI_Controller {
   }
 
   public function store() {
+    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+
+    if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
     $this->form_validation->set_rules('username', 'Username', 'required');
     $this->form_validation->set_rules('fullname', 'Fullname', 'required');
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
@@ -85,19 +91,23 @@ class Users extends CI_Controller {
       redirect('login');
     }
 
-    $edit_users_permission_id = $this->Permission_model->get_permission_id('user edit');
+    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
 
-    if (!in_array($edit_users_permission_id, $this->session->userdata('permissions'))) {
+    if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
 
     $data['user'] = $this->User_model->get_user_by_id($id);
+    $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+    $data['user_permissions'] = $this->User_model->get_user_permissions($id);
     $this->load->view('users/edit_user', $data);
   }
 
   public function update($id) {
-    if (!$this->session->userdata('user_id')) {
-      redirect('login');
+    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+
+    if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
     }
   
     $this->form_validation->set_rules('username', 'Username', 'required');
@@ -113,6 +123,7 @@ class Users extends CI_Controller {
       $email = $this->input->post('email', TRUE);
       $password = $this->input->post('password', TRUE);
       $confirm_password = $this->input->post('confirm_password');
+      $permissions = $this->input->post('permissions', TRUE);
   
       $data = array(
         'username' => $username,
@@ -129,6 +140,9 @@ class Users extends CI_Controller {
       }
   
       $this->User_model->update_user($id, $data);
+
+      $this->User_model->update_user_permissions($id, $permissions);
+      
       $this->session->set_flashdata('success', 'User updated successfully');
       redirect('users/list');
     }
@@ -139,9 +153,9 @@ class Users extends CI_Controller {
       redirect('login');
     }
 
-    $delete_users_permission_id = $this->Permission_model->get_permission_id('user delete');
+    $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
 
-    if (!in_array($delete_users_permission_id, $this->session->userdata('permissions'))) {
+    if (!in_array($user_delete_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
 
@@ -197,8 +211,8 @@ class Users extends CI_Controller {
       $permissions = $this->Permission_model->get_user_permissions($user->id);
       $this->session->set_userdata('permissions', array_column($permissions, 'permission_id'));
 
-      $list_users_permission_id = $this->Permission_model->get_permission_id('list_users');
-      $this->session->set_userdata('list_users_permission_id', $list_users_permission_id);
+      // $list_users_permission_id = $this->Permission_model->get_permission_id('list_users');
+      // $this->session->set_userdata('list_users_permission_id', $list_users_permission_id);
 
       if ($remember) {
         set_cookie('remember_username', $user->username, 86400 * 30);

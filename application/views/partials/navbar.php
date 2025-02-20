@@ -40,13 +40,19 @@
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
             <a class="nav-link <?php echo ($this->uri->segment(1) == 'dashboard') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('dashboard'); ?>">Dashboard</a>
-            <a class="nav-link <?php echo ($this->uri->segment(1) == 'permissions') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('permissions/create'); ?>">Permissions</a>
+            <?php
+              $permissions = $this->session->userdata('permissions');
+              $permission_list_permission_id = $this->Permission_model->get_permission_id('permission list');
+              if (in_array($permission_list_permission_id, $permissions)):
+            ?>
+            <a class="nav-link <?php echo ($this->uri->segment(1) == 'permissions') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('permissions/list'); ?>">Permissions</a>
+            <?php endif; ?>
             <?php
               $permissions = $this->session->userdata('permissions');
               $list_users_permission_id = $this->Permission_model->get_permission_id('user list');
               if (in_array($list_users_permission_id, $permissions)):
             ?>
-              <a class="nav-link <?php echo ($this->uri->segment(1) == 'users') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('users/list'); ?>">Users</a>
+            <a class="nav-link <?php echo ($this->uri->segment(1) == 'users') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('users/list'); ?>">Users</a>
             <?php endif; ?>
           </li>
         </ul>

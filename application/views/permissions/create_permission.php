@@ -7,7 +7,7 @@
     <link href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-body-tertiary">
     <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container pt-5 mt-4">
       <?php if ($this->session->flashdata('success')): ?>
@@ -35,12 +35,12 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card col-md-5 rounded-4">
-          <div class="card-body p-md-4 p-xl-5 text-body-secondary">
+        <div class="card col-md-6 col-lg-5 border-0 bg-body shadow-sm mt-5">
+          <div class="card-body p-md-4 p-xl-5">
             <form method="post" action="<?php echo site_url('permissions/store'); ?>">
-              <h4 class="card-title"><i class="bi bi-shield-lock-fill text-primary"></i></i> Create a permission</h4>
-              <p class="card-text">Create a new permission access.</p>
-              <div class="mb-3">
+              <h5 class="card-title"><i class="bi bi-shield-lock-fill text-primary"></i></i> Create a new permission</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">Fill in the details below to create a new permission access.</h6>
+              <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Permission Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo set_value('name'); ?>" required>
               </div>
@@ -48,7 +48,9 @@
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" id="description" name="description" rows="3"><?php echo set_value('description'); ?></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Create Permission</button>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary btn-lg mt-3">Create Permission</button>
+              </div>
             </form>
           </div>
         </div>

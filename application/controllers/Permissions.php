@@ -9,11 +9,33 @@ class Permissions extends CI_Controller {
     $this->load->library('session');
     $this->load->helper('cookie');
     $this->load->library('form_validation');
+    $this->load->library('PermissionMiddleware');
+  }
+
+  public function index() {
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $permission_list_permission_id = $this->Permission_model->get_permission_id('permission list');
+
+    if (!in_array($permission_list_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $data['permissions'] = $this->Permission_model->get_all_permissions();
+    $this->load->view('permissions/list_permission', $data);
   }
 
   public function create() {
     if (!$this->session->userdata('user_id')) {
       redirect('users/login');
+    }
+
+    $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
+
+    if (!in_array($permission_create_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
     }
 
     $this->load->view('permissions/create_permission');

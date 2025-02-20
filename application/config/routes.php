@@ -70,6 +70,7 @@ $route['users/authenticate'] = 'users/authenticate';
 // custom routes for permissions
 $route['permissions/create'] = 'permissions/create';
 $route['permissions/store'] = 'permissions/store';
+$route['permissions/list'] = 'permissions/index';
 
 // Custom route for error 403
 $route['errors/error_403'] = 'errors/error_403';

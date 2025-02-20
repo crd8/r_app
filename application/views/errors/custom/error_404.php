@@ -49,7 +49,6 @@
             var newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
             document.documentElement.setAttribute('data-bs-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            // Ubah ikon sesuai tema
             darkModeToggle.classList.toggle('bi-sun-fill');
             darkModeToggle.classList.toggle('bi-moon-stars-fill');
           });

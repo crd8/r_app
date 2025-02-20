@@ -28,142 +28,6 @@ class Users extends CI_Controller {
     $this->load->view('users/list_user', $data);
   }
 
-  public function create() {
-    if (!$this->session->userdata('user_id')) {
-      redirect('login');
-    }
-
-    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
-
-    if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
-    }
-
-    $this->load->view('users/create_user');
-  }
-
-  public function store() {
-    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
-
-    if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
-    }
-
-    $this->form_validation->set_rules('username', 'Username', 'required');
-    $this->form_validation->set_rules('fullname', 'Fullname', 'required');
-    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-    $this->form_validation->set_rules('password', 'Password', 'required');
-    $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-
-    if ($this->form_validation->run() == FALSE) {
-      $this->session->set_flashdata('error', validation_errors());
-      $this->load->view('users/create_user');
-    } else {
-      $username = $this->input->post('username', TRUE);
-      $fullname = $this->input->post('fullname', TRUE);
-      $password = $this->input->post('password', TRUE);
-      $email = $this->input->post('email', TRUE);
-
-      if ($this->User_model->get_user_by_username($username)) {
-        $this->session->set_flashdata('error', 'Username already exists');
-        $this->load->view('users/create_user');
-      } elseif ($this->User_model->get_user_by_email($email)) {
-        $this->session->set_flashdata('error', 'Email already exists');
-        $this->load->view('users/create_user');
-      } else {
-        $data = array(
-          'id' => generate_uuid(),
-          'username' => $username,
-          'fullname' => $fullname,
-          'password' => password_hash($password, PASSWORD_BCRYPT),
-          'email' => $email,
-        );
-
-        $this->User_model->insert_user($data);
-        $this->session->set_flashdata('success', 'User created successfully');
-        redirect('users/list');
-      }
-    }
-  }
-
-  public function edit($id) {
-    if (!$this->session->userdata('user_id')) {
-      redirect('login');
-    }
-
-    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
-
-    if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
-    }
-
-    $data['user'] = $this->User_model->get_user_by_id($id);
-    $data['all_permissions'] = $this->Permission_model->get_all_permissions();
-    $data['user_permissions'] = $this->User_model->get_user_permissions($id);
-    $this->load->view('users/edit_user', $data);
-  }
-
-  public function update($id) {
-    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
-
-    if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
-    }
-  
-    $this->form_validation->set_rules('username', 'Username', 'required');
-    $this->form_validation->set_rules('fullname', 'Fullname', 'required');
-    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-  
-    if ($this->form_validation->run() == FALSE) {
-      $this->session->set_flashdata('error', validation_errors());
-      redirect('users/edit/' . $id);
-    } else {
-      $username = $this->input->post('username', TRUE);
-      $fullname = $this->input->post('fullname', TRUE);
-      $email = $this->input->post('email', TRUE);
-      $password = $this->input->post('password', TRUE);
-      $confirm_password = $this->input->post('confirm_password');
-      $permissions = $this->input->post('permissions', TRUE);
-  
-      $data = array(
-        'username' => $username,
-        'fullname' => $fullname,
-        'email' => $email,
-      );
-  
-      if (!empty($password)) {
-        if ($password !== $confirm_password) {
-          $this->session->set_flashdata('error', 'Password and Confirm Password do not match');
-          redirect('users/edit/' . $id);
-        }
-        $data['password'] = password_hash($password, PASSWORD_BCRYPT);
-      }
-  
-      $this->User_model->update_user($id, $data);
-
-      $this->User_model->update_user_permissions($id, $permissions);
-      
-      $this->session->set_flashdata('success', 'User updated successfully');
-      redirect('users/list');
-    }
-  }
-
-  public function delete($id) {
-    if (!$this->session->userdata('user_id')) {
-      redirect('login');
-    }
-
-    $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
-
-    if (!in_array($user_delete_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
-    }
-
-    $this->User_model->delete_user($id);
-    $this->session->set_flashdata('success', 'User deleted successfully');
-    redirect('users');
-  }
-
   public function login() {
     $this->load->view('users/login_user');
   }
@@ -262,9 +126,22 @@ class Users extends CI_Controller {
   }
 
   public function force_logout($id) {
-    $user = $this->User_model->get_user_by_id($id);
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
 
-    if (!$user || $user->is_logged_in == FALSE) {
+    $current_user_id = $this->session->userdata('user_id');
+    $force_logout_permission_id = $this->Permission_model->get_permission_id('force logout');
+    
+    if ($current_user_id != $id && !in_array($force_logout_permission_id, $this->session->userdata('permissions'))) {
+        redirect('errors/error_403');
+    }
+
+    $user = $this->User_model->get_user_by_id($id);
+    if (!$user) {
+      show_404();
+    }
+    if ($user->is_logged_in == FALSE) {
       $this->session->set_flashdata('error', 'User is already logged out or does not exist.');
       redirect('dashboard');
     }
@@ -281,6 +158,86 @@ class Users extends CI_Controller {
     $this->session->set_flashdata('success', 'User has been forcibly logged out.');
 
     redirect('dashboard');
+  }
+
+  public function create() {
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+
+    if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->load->view('users/create_user');
+  }
+
+  public function store() {
+    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+
+    if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->form_validation->set_rules('username', 'Username', 'required');
+    $this->form_validation->set_rules('fullname', 'Fullname', 'required');
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    $this->form_validation->set_rules('password', 'Password', 'required');
+    $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
+
+    if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('error', validation_errors());
+      $this->load->view('users/create_user');
+    } else {
+      $username = $this->input->post('username', TRUE);
+      $fullname = $this->input->post('fullname', TRUE);
+      $password = $this->input->post('password', TRUE);
+      $email = $this->input->post('email', TRUE);
+
+      if ($this->User_model->get_user_by_username($username)) {
+        $this->session->set_flashdata('error', 'Username already exists');
+        $this->load->view('users/create_user');
+      } elseif ($this->User_model->get_user_by_email($email)) {
+        $this->session->set_flashdata('error', 'Email already exists');
+        $this->load->view('users/create_user');
+      } else {
+        $data = array(
+          'id' => generate_uuid(),
+          'username' => $username,
+          'fullname' => $fullname,
+          'password' => password_hash($password, PASSWORD_BCRYPT),
+          'email' => $email,
+        );
+
+        $this->User_model->insert_user($data);
+        $this->session->set_flashdata('success', 'User created successfully');
+        redirect('users/list');
+      }
+    }
+  }
+
+  public function edit($id) {
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $data['user'] = $this->User_model->get_user_by_id($id);
+    if (!$data['user']) {
+      redirect('errors/error_404');
+    }
+
+    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+
+    if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $data['user'] = $this->User_model->get_user_by_id($id);
+    $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+    $data['user_permissions'] = $this->User_model->get_user_permissions($id);
+    $this->load->view('users/edit_user', $data);
   }
 
   public function edit_profile() {
@@ -347,6 +304,72 @@ class Users extends CI_Controller {
 
     $this->session->set_flashdata('success', 'Password updated successfully');
     redirect('profile');
+  }
+
+  public function update($id) {
+    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+
+    if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+  
+    $this->form_validation->set_rules('username', 'Username', 'required');
+    $this->form_validation->set_rules('fullname', 'Fullname', 'required');
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+  
+    if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('users/edit/' . $id);
+    } else {
+      $username = $this->input->post('username', TRUE);
+      $fullname = $this->input->post('fullname', TRUE);
+      $email = $this->input->post('email', TRUE);
+      $password = $this->input->post('password', TRUE);
+      $confirm_password = $this->input->post('confirm_password');
+      $permissions = $this->input->post('permissions', TRUE);
+  
+      $data = array(
+        'username' => $username,
+        'fullname' => $fullname,
+        'email' => $email,
+      );
+  
+      if (!empty($password)) {
+        if ($password !== $confirm_password) {
+          $this->session->set_flashdata('error', 'Password and Confirm Password do not match');
+          redirect('users/edit/' . $id);
+        }
+        $data['password'] = password_hash($password, PASSWORD_BCRYPT);
+      }
+  
+      $this->User_model->update_user($id, $data);
+
+      $this->User_model->update_user_permissions($id, $permissions);
+      
+      $this->session->set_flashdata('success', 'User updated successfully');
+      redirect('users/list');
+    }
+  }
+
+  public function delete($id) {
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $data['user'] = $this->User_model->get_user_by_id($id);
+    if (!$data['user']) {
+      redirect('errors/error_404');
+    }
+
+    $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
+
+    if (!in_array($user_delete_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->User_model->delete_user($id);
+    $this->session->set_flashdata('success', 'User deleted successfully');
+    redirect('users');
   }
 }
 ?>

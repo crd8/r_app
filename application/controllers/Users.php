@@ -82,7 +82,7 @@ class Users extends CI_Controller {
 
       $this->db->where('id', session_id())->update('ci_sessions', ['user_id' => $user->id]);
 
-      $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
+      // $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
 
       $permissions = $this->Permission_model->get_user_permissions($user->id);
       $this->session->set_userdata('permissions', array_column($permissions, 'permission_id'));
@@ -131,7 +131,7 @@ class Users extends CI_Controller {
     }
 
     $this->db->where('user_id', $user_id)->delete('ci_sessions');
-    $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
+    // $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
 
     $this->User_model->update_user($user_id, ['is_logged_in' => FALSE]);
 
@@ -166,7 +166,7 @@ class Users extends CI_Controller {
     }
 
     $this->db->where('user_id', $id)->delete('ci_sessions');
-    $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
+    // $this->db->where('user_id IS NULL', null, false)->delete('ci_sessions');
 
     $this->User_model->update_user($id, ['is_logged_in' => FALSE]);
 

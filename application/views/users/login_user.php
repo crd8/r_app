@@ -31,6 +31,7 @@
               <h3 class="fw-bold fst-italic mt-3 text-body">RAPINDO</h3>
               <p class="text-body-secondary fw-normal mb-4">Sign in to your account</p>
               <form method="post" action="<?php echo site_url('users/authenticate'); ?>" id="loginForm">
+                <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInputUsername" name="username" placeholder="username" value="<?php echo $this->session->flashdata('username') ?: get_cookie('remember_username'); ?>">
                   <label for="floatingInputUsername">Username</label>

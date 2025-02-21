@@ -27,7 +27,10 @@
         </li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?php echo site_url('profile'); ?>">Profile</a></li>
-        <li><a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sign out</a></li>
+        <form action="<?php echo site_url('logout'); ?>" method="post" id="logoutForm" style="display: none;">
+          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+        </form>
+        <li><a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Sign out</a></li>
       </ul>
     </div>
     

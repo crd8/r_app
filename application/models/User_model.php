@@ -54,7 +54,6 @@ class User_model extends CI_Model {
     ]);
   }
 
-  // Fungsi untuk mengambil permission yang dimiliki user dari tabel user_permissions
   public function get_user_permissions($user_id) {
     $this->db->select('permission_id');
     $this->db->from('user_permissions');
@@ -68,13 +67,10 @@ class User_model extends CI_Model {
     return $permissions;
   }
 
-  // Fungsi untuk mengupdate permission user
   public function update_user_permissions($user_id, $permissions) {
-    // Hapus permission lama untuk user ini
     $this->db->where('user_id', $user_id);
     $this->db->delete('user_permissions');
     
-    // Jika ada permission baru yang dipilih, masukkan ke tabel user_permissions
     if (!empty($permissions)) {
       $data = [];
       foreach ($permissions as $permission_id) {

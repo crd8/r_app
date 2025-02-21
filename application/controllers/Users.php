@@ -6,11 +6,10 @@ class Users extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->model('User_model');
-    $this->load->model('Permission_model');
     $this->load->library('session');
     $this->load->helper('cookie');
     $this->load->library('form_validation');
-    $this->load->library('PermissionMiddleware');
+    $this->load->model('Permission_model');
   }
 
   public function index() {
@@ -18,17 +17,30 @@ class Users extends CI_Controller {
       redirect('login');
     }
 
-    $user_list_permission_id = $this->Permission_model->get_permission_id('user list');
+    $userPermissions = $this->session->userdata('permissions');
+    if (!$userPermissions || !is_array($userPermissions)) {
+        redirect('errors/error_403');
+    }
 
+    $user_list_permission_id = $this->Permission_model->get_permission_id('user list');
     if (!in_array($user_list_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
 
     $data['users'] = $this->User_model->get_all_users();
+
     $this->load->view('users/list_user', $data);
   }
 
   public function login() {
+    if ($this->session->userdata('user_id')) {
+      redirect('dashboard');
+    }
+
+    $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    $this->output->set_header('Cache-Control: post-check=0, pre-check=0', false);
+    $this->output->set_header('Pragma: no-cache');
+
     $this->load->view('users/login_user');
   }
 
@@ -109,8 +121,11 @@ class Users extends CI_Controller {
   }
 
   public function logout() {
+    if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+      redirect('login');
+    }
+    
     $user_id = $this->session->userdata('user_id');
-
     if (!$user_id) {
       redirect('login');
     }
@@ -126,6 +141,10 @@ class Users extends CI_Controller {
   }
 
   public function force_logout($id) {
+    if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+      redirect('dashboard');
+    }
+    
     if (!$this->session->userdata('user_id')) {
       redirect('login');
     }
@@ -151,7 +170,7 @@ class Users extends CI_Controller {
 
     $this->User_model->update_user($id, ['is_logged_in' => FALSE]);
 
-    if ($this->session->userdata('user_id') == $id) {
+    if ($current_user_id == $id) {
       $this->session->sess_destroy();
     }
 

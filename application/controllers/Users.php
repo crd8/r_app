@@ -253,7 +253,6 @@ class Users extends CI_Controller {
       redirect('errors/error_403');
     }
 
-    $data['user'] = $this->User_model->get_user_by_id($id);
     $data['all_permissions'] = $this->Permission_model->get_all_permissions();
     $data['user_permissions'] = $this->User_model->get_user_permissions($id);
     $this->load->view('users/edit_user', $data);
@@ -362,7 +361,6 @@ class Users extends CI_Controller {
       }
   
       $this->User_model->update_user($id, $data);
-
       $this->User_model->update_user_permissions($id, $permissions);
       
       $this->session->set_flashdata('success', 'User updated successfully');
@@ -371,6 +369,10 @@ class Users extends CI_Controller {
   }
 
   public function delete($id) {
+    if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+      redirect('errors/error_403');
+    }
+    
     if (!$this->session->userdata('user_id')) {
       redirect('login');
     }
@@ -381,7 +383,6 @@ class Users extends CI_Controller {
     }
 
     $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
-
     if (!in_array($user_delete_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }

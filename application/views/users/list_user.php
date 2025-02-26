@@ -104,7 +104,10 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a href="#" id="confirmDeleteButton" class="btn btn-danger">Delete</a>
+            <form id="deleteUserForm" action="" method="post" style="display: inline;">
+              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           </div>
         </div>
       </div>
@@ -129,13 +132,18 @@
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
       });
-      $('#deleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var userId = button.data('userid');
-        var username = button.data('username');
-        var modal = $(this);
-        modal.find('#usernameToDelete').text(username);
-        modal.find('#confirmDeleteButton').attr('href', '<?php echo site_url('users/delete/'); ?>' + userId);
+      document.addEventListener('DOMContentLoaded', function () {
+        var deleteModal = document.getElementById('deleteModal');
+        var deleteForm = document.getElementById('deleteUserForm');
+        var usernameToDeleteSpan = document.getElementById('usernameToDelete');
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget;
+          var userId = button.getAttribute('data-userid');
+          var username = button.getAttribute('data-username');
+          usernameToDeleteSpan.textContent = username;
+          deleteForm.setAttribute('action', '<?php echo site_url("users/delete/"); ?>' + userId);
+        });
       });
     </script>
   </body>

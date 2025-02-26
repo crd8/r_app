@@ -39,19 +39,20 @@
           <div class="card-body p-md-4 p-xl-5">
             <a href="<?php echo site_url('users/list'); ?>" class="btn btn-sm btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Back</a>
             <form method="post" action="<?php echo site_url('users/store'); ?>">
+              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <h5 class="card-title"><i class="bi bi-person-fill-add text-primary"></i> Create a New User</h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">Fill in the details below to create a new user account</h6>
               <div class="mb-3 mt-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="<?php echo set_value('username'); ?>" required>
+                <input type="text" class="form-control" id="username" name="username" value="<?php echo html_escape(set_value('username')); ?>" required>
               </div>
               <div class="mb-3">
                 <label for="fullname" class="form-label">Fullname</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo set_value('fullname'); ?>" required>
+                <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo html_escape(set_value('fullname')); ?>" required>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email'); ?>" required>
+                <input type="email" class="form-control" id="email" name="email" value="<?php echo html_escape(set_value('email')); ?>" required>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>

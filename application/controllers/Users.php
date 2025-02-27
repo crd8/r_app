@@ -190,7 +190,9 @@ class Users extends CI_Controller {
       redirect('errors/error_403');
     }
 
-    $this->load->view('users/create_user');
+    $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+    $data['user_permissions'] = [];
+    $this->load->view('users/create_user', $data);
   }
 
   public function store() {
@@ -208,6 +210,8 @@ class Users extends CI_Controller {
 
     if ($this->form_validation->run() == FALSE) {
       $this->session->set_flashdata('error', validation_errors());
+      $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+      $data['user_permissions'] = [];
       $this->load->view('users/create_user');
     } else {
       $username = $this->input->post('username', TRUE);
@@ -217,13 +221,18 @@ class Users extends CI_Controller {
 
       if ($this->User_model->get_user_by_username($username)) {
         $this->session->set_flashdata('error', 'Username already exists');
+        $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+        $data['user_permissions'] = [];
         $this->load->view('users/create_user');
       } elseif ($this->User_model->get_user_by_email($email)) {
         $this->session->set_flashdata('error', 'Email already exists');
+        $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+        $data['user_permissions'] = [];
         $this->load->view('users/create_user');
       } else {
+        $new_user_id = generate_uuid();
         $data = array(
-          'id' => generate_uuid(),
+          'id' => $new_user_id,
           'username' => $username,
           'fullname' => $fullname,
           'password' => password_hash($password, PASSWORD_BCRYPT),
@@ -231,6 +240,8 @@ class Users extends CI_Controller {
         );
 
         $this->User_model->insert_user($data);
+        $permissions = $this->input->post('permissions', TRUE);
+        $this->User_model->update_user_permissions($new_user_id, $permissions);
         $this->session->set_flashdata('success', 'User created successfully');
         redirect('users/list');
       }

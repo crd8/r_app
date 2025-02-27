@@ -74,7 +74,7 @@
                       $list_users_permission_id = $this->Permission_model->get_permission_id('force logout');
                       if (in_array($list_users_permission_id, $session_permissions)):
                     ?>
-                    +
+                    
                     <form action="<?php echo site_url('users/force_logout/' . $user->id); ?>" method="post" style="display: inline;">
                       <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                       <button type="submit" class="btn btn-danger btn-sm">

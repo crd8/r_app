@@ -49,11 +49,17 @@
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
                   <label for="password" class="form-label">Password <small class="text-muted">(leave blank if not changing)</small></label>
-                  <input type="password" class="form-control" id="password" name="password">
+                  <div class="position-relative">
+                    <input type="password" class="form-control" id="password" name="password">
+                    <i class="bi bi-eye position-absolute translate-middle-y top-50 end-0 me-3 toggle-password" style="cursor: pointer;"></i>
+                  </div>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="confirm_password" class="form-label">Confirm Password</label>
-                  <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                  <div class="position-relative">
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    <i class="bi bi-eye position-absolute translate-middle-y top-50 end-0 me-3 toggle-password" style="cursor: pointer;"></i>
+                  </div>
                 </div>
               </div>
               <div class="mb-3">
@@ -112,11 +118,26 @@
     
     <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
     <script>
-      // Tampilkan toast jika ada flashdata error/success
       var toastElements = document.querySelectorAll('.toast');
       toastElements.forEach(function (toastElement) {
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
+      });
+
+      var togglePasswordIcons = document.querySelectorAll('.toggle-password');
+      togglePasswordIcons.forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var input = icon.previousElementSibling;
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+          } else {
+            input.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+          }
+        });
       });
     </script>
   </body>

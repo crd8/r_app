@@ -72,5 +72,9 @@ $route['permissions/create'] = 'permissions/create';
 $route['permissions/store'] = 'permissions/store';
 $route['permissions/list'] = 'permissions/index';
 
+// custom routes for departments
+$route['departments/create'] = 'departments/create';
+$route['departments/store'] = 'departments/store';
+
 // Custom route for error 403
 $route['errors/error_403'] = 'errors/error_403';

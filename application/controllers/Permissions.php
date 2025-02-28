@@ -42,6 +42,12 @@ class Permissions extends CI_Controller {
   }
 
   public function store() {
+    $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
+
+    if (!in_array($permission_create_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
     $this->form_validation->set_rules('name', 'Name', 'required');
     $this->form_validation->set_rules('description', 'Description', 'required');
 
@@ -64,7 +70,7 @@ class Permissions extends CI_Controller {
 
         $this->Permission_model->insert_permission($data);
         $this->session->set_flashdata('success', 'Permission created successfully');
-        redirect('permissions/create');
+        redirect('permissions/list');
       }
     }
   }

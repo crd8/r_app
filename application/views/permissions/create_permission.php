@@ -10,18 +10,6 @@
   <body class="bg-body-tertiary">
     <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container pt-5 mt-4">
-      <?php if ($this->session->flashdata('success')): ?>
-        <div class="toast-container position-fixed top-0 end-0 p-3">
-          <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-              <div class="toast-body">
-                <?php echo $this->session->flashdata('success'); ?>
-              </div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-          </div>
-        </div>
-      <?php endif; ?>
       <?php if ($this->session->flashdata('error')): ?>
         <div class="toast-container position-fixed top-0 end-0 p-3">
           <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -38,6 +26,7 @@
         <div class="card col-md-6 col-lg-5 border-0 bg-body shadow-sm mt-5">
           <div class="card-body p-md-4 p-xl-5">
             <form method="post" action="<?php echo site_url('permissions/store'); ?>">
+            <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <h5 class="card-title"><i class="bi bi-shield-lock-fill text-primary"></i></i> Create a new permission</h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">Fill in the details below to create a new permission access.</h6>
               <div class="mb-3 mt-3">

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>List of Permissions</title>
+    <title>List of Departments</title>
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/dataTables.bootstrap5.min.css'); ?>" rel="stylesheet">
@@ -28,23 +28,23 @@
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h5 class="card-title"><i class="bi bi-people-fill text-primary"></i> List of permissions</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">List of active permissions in system</h6>
+                <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> List of users departments</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">List of active departments in system</h6>
               </div>
               <?php
               $session_permissions = $this->session->userdata('permissions');
-              $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
-              if (in_array($permission_create_permission_id, $session_permissions)):
+              $department_create_permission_id = $this->Permission_model->get_permission_id('department create');
+              if (in_array($department_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('permissions/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-person-add"></i> Create Permission</a>
+              <a href="<?php echo site_url('users/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Create Department</a>
               <?php endif; ?>
             </div>
             <hr>
             <div class="table-responsive bg-body-tertiary p-2 rounded-2">
-              <table class="table table-hover align-middle" id="dataTablesPermissions">
+              <table class="table table-hover align-middle" id="dataTablesDepartments">
                 <thead>
                   <tr>
-                    <th class="text-uppercase" scope="col">Permission Name</th>
+                    <th class="text-uppercase" scope="col">Department name</th>
                     <th class="text-uppercase" scope="col">Description</th>
                     <th class="text-uppercase" scope="col">Created At</th>
                     <th class="text-uppercase" scope="col">Updated At</th>
@@ -52,28 +52,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($permissions as $permission): ?>
+                  <?php foreach ($departments as $department): ?>
                   <tr>
-                    <td><div><?php echo html_escape($permission->name); ?></div></td>
-                    <td><?php echo html_escape($permission->description); ?></td>
-                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->created_at))); ?></td>
-                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->updated_at))); ?></td>
+                    <td><?php echo html_escape($department->name); ?></td>
+                    <td><?php echo $department->description; ?></td>
+                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($department->created_at))); ?></td>
+                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($department->updated_at))); ?></td>
                     <td>
                       <?php
                       $session_permissions = $this->session->userdata('permissions');
-                      $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
-                      if (in_array($permission_edit_permission_id, $session_permissions)):
+                      $department_edit_permission_id = $this->Permission_model->get_permission_id('department edit');
+                      if (in_array($department_edit_permission_id, $session_permissions)):
                       ?>
-                      <a href="<?php echo site_url('permission/edit/' . $permission->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                      <a href="<?php echo site_url('departments/edit/' . $department->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                         <i class="bi bi-pencil-square text-warning-emphasis"></i>
                       </a>
                       <?php endif; ?>
                       <?php
                         $session_permissions = $this->session->userdata('permissions');
-                        $permission_delete_permission_id = $this->Permission_model->get_permission_id('permission delete');
-                        if (in_array($permission_delete_permission_id, $session_permissions)):
+                        $department_delete_permission_id = $this->Permission_model->get_permission_id('department delete');
+                        if (in_array($department_delete_permission_id, $session_permissions)):
                       ?>
-                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-permissionid="<?php echo $permission->id; ?>" data-name="<?php echo $permission->name; ?>">
+                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-departmentid="<?php echo $department->id; ?>" data-name="<?php echo $department->name; ?>" title="Delete">
                         <i class="bi bi-trash text-danger-emphasis"></i>
                       </a>
                       <?php endif; ?>
@@ -89,19 +89,22 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Delete Permission</h5>
+            <h5 class="modal-title" id="deleteModalLabel">Delete Department</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="text-center">Are you sure you want to delete the permission with name <strong><span id="nameToDelete"></span></strong>?</p>
+            <p class="text-center">Are you sure you want to delete the department with name <strong><span id="nameToDelete"></span></strong>?</p>
             <p class="text-center text-danger">This action cannot be undone.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a href="#" id="confirmDeleteButton" class="btn btn-danger">Delete</a>
+            <form id="deleteDepartmentForm" action="" method="post" style="display: inline;">
+              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           </div>
         </div>
       </div>
@@ -113,7 +116,7 @@
     <script src="<?php echo base_url('assets/js/dataTables.bootstrap5.min.js'); ?>"></script>
     <script>
       $(document).ready(function() {
-        $('#dataTablesPermissions').DataTable();
+        $('#dataTablesDepartments').DataTable();
       });
 
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -126,13 +129,18 @@
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
       });
-      $('#deleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var permissionId = button.data('permissionid');
-        var name = button.data('name');
-        var modal = $(this);
-        modal.find('#nameToDelete').text(name);
-        modal.find('#confirmDeleteButton').attr('href', '<?php echo site_url('permissions/delete/'); ?>' + permissionId);
+      document.addEventListener('DOMContentLoaded', function () {
+        var deleteModal = document.getElementById('deleteModal');
+        var deleteForm = document.getElementById('deleteDepartmentForm');
+        var nameToDeleteSpan = document.getElementById('nameToDelete');
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget;
+          var departmentId = button.getAttribute('data-departmentid');
+          var name = button.getAttribute('data-name');
+          nameToDeleteSpan.textContent = name;
+          deleteForm.setAttribute('action', '<?php echo site_url("departments/delete/"); ?>' + departmentIdId);
+        });
       });
     </script>
   </body>

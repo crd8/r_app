@@ -75,6 +75,7 @@ $route['permissions/list'] = 'permissions/index';
 // custom routes for departments
 $route['departments/create'] = 'departments/create';
 $route['departments/store'] = 'departments/store';
+$route['departments/list'] = 'departments/index';
 
 // Custom route for error 403
 $route['errors/error_403'] = 'errors/error_403';

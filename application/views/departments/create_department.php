@@ -23,21 +23,16 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card col-md-10 col-lg-10 border-0 bg-body shadow-sm mt-5">
+        <div class="card col-md-5 col-lg-5 border-0 bg-body shadow-sm mt-5">
           <div class="card-body p-md-4 p-xl-5">
             <a href="<?php echo site_url('departments/list'); ?>" class="btn btn-sm btn-secondary mb-3">
               <i class="bi bi-arrow-left"></i> Back
             </a>
             <form method="post" action="<?php echo site_url('departments/store'); ?>">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-              <h5 class="card-title">
-                <i class="bi bi-person-fill-add text-primary"></i> Create a New Department
-              </h5>
-              <h6 class="card-subtitle mb-4 text-body-secondary">
-                Fill in the details below to create a new department
-              </h6>
-              <div class="row mb-3">
-                <div class="col-md-4">
+              <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> Create a New Department</h5>
+              <h6 class="card-subtitle mb-4 text-body-secondary">Fill in the details below to create a new department</h6>
+                <div class="mb-3">
                   <label for="name" class="form-label">Department name</label>
                   <input type="text" class="form-control" id="name" name="name" value="<?php echo html_escape(set_value('name')); ?>" required>
                 </div>
@@ -45,7 +40,6 @@
                   <label for="description" class="form-label">Description</label>
                   <input type="text" class="form-control" id="description" name="description" value="<?php echo html_escape(set_value('description')); ?>" required>
                 </div>
-              </div>
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg mt-3">Create department</button>
               </div>

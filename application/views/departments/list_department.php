@@ -36,7 +36,7 @@
               $department_create_permission_id = $this->Permission_model->get_permission_id('department create');
               if (in_array($department_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('users/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Create Department</a>
+              <a href="<?php echo site_url('departments/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Create Department</a>
               <?php endif; ?>
             </div>
             <hr>

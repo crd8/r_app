@@ -400,7 +400,7 @@ class Users extends CI_Controller {
 
     $this->User_model->delete_user($id);
     $this->session->set_flashdata('success', 'User deleted successfully');
-    redirect('users');
+    redirect('users/list');
   }
 }
 ?>

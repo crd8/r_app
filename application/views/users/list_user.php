@@ -132,6 +132,7 @@
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
       });
+      
       document.addEventListener('DOMContentLoaded', function () {
         var deleteModal = document.getElementById('deleteModal');
         var deleteForm = document.getElementById('deleteUserForm');

@@ -8,10 +8,6 @@ class Permission_model extends CI_Model {
     return $query->result();
   }
 
-  public function insert_permission($data) {
-    $this->db->insert('permissions', $data);
-  }
-
   public function get_permission_by_name($name) {
     $this->db->where('name', $name);
     $query = $this->db->get('permissions');
@@ -22,11 +18,6 @@ class Permission_model extends CI_Model {
     $this->db->where('id', $id);
     $query = $this->db->get('permissions');
     return $query->row();
-  }
-
-  public function update_permission($id, $data) {
-    $this->db->where('id', $id);
-    $this->db->update('permissions', $data);
   }
 
   public function has_permission($user_id, $permission_id) {
@@ -61,6 +52,20 @@ class Permission_model extends CI_Model {
       return $query->row()->name;
     }
     return null;
+  }
+
+  public function insert_permission($data) {
+    $this->db->insert('permissions', $data);
+  }
+
+  public function update_permission($id, $data) {
+    $this->db->where('id', $id);
+    $this->db->update('permissions', $data);
+  }
+  
+  public function delete_permission($id) {
+    $this->db->where('id', $id);
+    $this->db->delete('permissions');
   }
 }
 ?>

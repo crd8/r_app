@@ -74,5 +74,29 @@ class Permissions extends CI_Controller {
       }
     }
   }
+
+  public function delete($id) {
+    if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+      redirect('errors/error_403');
+    }
+    
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $data['permission'] = $this->Permission_model->get_permission_by_id($id);
+    if (!$data['permission']) {
+      redirect('errors/error_404');
+    }
+
+    $permission_delete_permission_id = $this->Permission_model->get_permission_id('permission delete');
+    if (!in_array($permission_delete_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->Permission_model->delete_permission($id);
+    $this->session->set_flashdata('success', 'Permission deleted successfully');
+    redirect('permissions/list');
+  }
 }
 ?>

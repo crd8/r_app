@@ -78,6 +78,8 @@
                       $grouped_permissions['User'][] = $permission;
                     } elseif (stripos($permission->name, 'permission') !== false) {
                       $grouped_permissions['Permission'][] = $permission;
+                    } elseif (stripos($permission->name, 'department') !== false) {
+                      $grouped_permissions['Department'][] = $permission;
                     } else {
                       $grouped_permissions['Other'][] = $permission;
                     }

@@ -28,7 +28,7 @@
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h5 class="card-title"><i class="bi bi-people-fill text-primary"></i> List of permissions</h5>
+                <h5 class="card-title"><i class="bi bi-shield-shaded text-primary"></i> List of permissions</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active permissions in system</h6>
               </div>
               <?php
@@ -36,7 +36,7 @@
               $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
               if (in_array($permission_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('permissions/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-person-add"></i> Create Permission</a>
+              <a href="<?php echo site_url('permissions/create'); ?>" class="btn btn-primary"><i class="bi bi-shield-plus"></i> Create Permission</a>
               <?php endif; ?>
             </div>
             <hr>
@@ -101,7 +101,10 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a href="#" id="confirmDeleteButton" class="btn btn-danger">Delete</a>
+            <form id="deletePermissionForm" action="" method="post" style="display: inline;">
+              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           </div>
         </div>
       </div>
@@ -126,13 +129,19 @@
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
       });
-      $('#deleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var permissionId = button.data('permissionid');
-        var name = button.data('name');
-        var modal = $(this);
-        modal.find('#nameToDelete').text(name);
-        modal.find('#confirmDeleteButton').attr('href', '<?php echo site_url('permissions/delete/'); ?>' + permissionId);
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var deleteModal = document.getElementById('deleteModal');
+        var deleteForm = document.getElementById('deletePermissionForm');
+        var nameToDeleteSpan = document.getElementById('nameToDelete');
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget;
+          var permissionId = button.getAttribute('data-permissionid');
+          var name = button.getAttribute('data-name');
+          nameToDeleteSpan.textContent = name;
+          deleteForm.setAttribute('action', '<?php echo site_url("permissions/delete/"); ?>' + permissionId);
+        });
       });
     </script>
   </body>

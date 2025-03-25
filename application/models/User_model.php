@@ -43,8 +43,17 @@ class User_model extends CI_Model {
   }
   
   public function delete_user($id) {
+    $this->db->trans_start();
+
+    $this->db->where('user_id', $id);
+    $this->db->delete('user_permissions');
+
     $this->db->where('id', $id);
     $this->db->delete('users');
+
+    $this->db->trans_complete();
+
+    return $this->db->trans_status();
   }
   
   public function update_failed_attempts($username, $attempts, $lock_time = null) {

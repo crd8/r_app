@@ -79,5 +79,77 @@ class Departments extends CI_Controller {
       }
     }
   }
+
+  public function edit($id) {
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $data['department'] = $this->Department_model->get_department_by_id($id);
+    if (!$data['department']) {
+      redirect('errors/error_404');
+    }
+
+    $department_edit_permission_id = $this->Permission_model->get_permission_id('department edit');
+
+    if (!in_array($department_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->load->view('departments/edit_department', $data);
+  }
+
+  public function update($id) {
+    $department_edit_permission_id = $this->Permission_model->get_permission_id('department edit');
+
+    if (!in_array($department_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+  
+    $this->form_validation->set_rules('name', 'Department name', 'required');
+    $this->form_validation->set_rules('description', 'Description', 'required');
+  
+    if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('departments/edit/' . $id);
+    } else {
+      $name = $this->input->post('name', TRUE);
+      $description = $this->input->post('description', TRUE);
+  
+      $data = array(
+        'name' => $name,
+        'description' => $description,
+      );
+  
+      $this->Department_model->update_department($id, $data);
+      
+      $this->session->set_flashdata('success', 'Department updated successfully');
+      redirect('departments/list');
+    }
+  }
+
+  public function delete($id) {
+    if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+      redirect('errors/error_403');
+    }
+    
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $data['department'] = $this->Department_model->get_department_by_id($id);
+    if (!$data['department']) {
+      redirect('errors/error_404');
+    }
+
+    $department_delete_permission_id = $this->Permission_model->get_permission_id('department delete');
+    if (!in_array($department_delete_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->Department_model->delete_department($id);
+    $this->session->set_flashdata('success', 'Department deleted successfully');
+    redirect('departments/list');
+  }
 }
 ?>

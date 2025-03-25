@@ -24,11 +24,11 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card bg-body col-12 border-0 shadow-sm mt-5">
+        <div class="card col-md-12 col-lg-9 border-0 bg-body shadow-sm mt-5">
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> List of users departments</h5>
+                <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> List of departments</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active departments in system</h6>
               </div>
               <?php
@@ -36,7 +36,7 @@
               $department_create_permission_id = $this->Permission_model->get_permission_id('department create');
               if (in_array($department_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('departments/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Create Department</a>
+              <a href="<?php echo site_url('departments/create'); ?>" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Create Department</a>
               <?php endif; ?>
             </div>
             <hr>
@@ -45,7 +45,6 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase" scope="col">Department name</th>
-                    <th class="text-uppercase" scope="col">Description</th>
                     <th class="text-uppercase" scope="col">Created At</th>
                     <th class="text-uppercase" scope="col">Updated At</th>
                     <th class="text-uppercase">Option</th>
@@ -54,8 +53,10 @@
                 <tbody>
                   <?php foreach ($departments as $department): ?>
                   <tr>
-                    <td><?php echo html_escape($department->name); ?></td>
-                    <td><?php echo $department->description; ?></td>
+                    <td>
+                      <div><?php echo html_escape($department->name); ?></div>
+                      <div class="text-body-secondary"><small><?php echo html_escape($department->description); ?></small></div>
+                    </td>
                     <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($department->created_at))); ?></td>
                     <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($department->updated_at))); ?></td>
                     <td>
@@ -73,8 +74,10 @@
                         $department_delete_permission_id = $this->Permission_model->get_permission_id('department delete');
                         if (in_array($department_delete_permission_id, $session_permissions)):
                       ?>
-                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-departmentid="<?php echo $department->id; ?>" data-name="<?php echo $department->name; ?>" title="Delete">
-                        <i class="bi bi-trash text-danger-emphasis"></i>
+                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-departmentid="<?php echo $department->id; ?>" data-name="<?php echo $department->name; ?>">
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                          <i class="bi bi-trash"></i>
+                        </span>
                       </a>
                       <?php endif; ?>
                     </td>
@@ -96,7 +99,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="text-center">Are you sure you want to delete the department with name <strong><span id="nameToDelete"></span></strong>?</p>
+            <p class="text-center">Are you sure you want to delete department with name <strong><span id="nameToDelete"></span></strong>?</p>
             <p class="text-center text-danger">This action cannot be undone.</p>
           </div>
           <div class="modal-footer">
@@ -115,31 +118,35 @@
     <script src="<?php echo base_url('assets/js/dataTables.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/dataTables.bootstrap5.min.js'); ?>"></script>
     <script>
-      $(document).ready(function() {
-        $('#dataTablesDepartments').DataTable();
-      });
+      $(document).ready(function () {
+        var table = $('#dataTablesDepartments').DataTable({
+          order: []
+        });
 
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-      });
+        function initTooltips() {
+          var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+          tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+          });
+        }
+        
+        initTooltips();
 
-      var toastElements = document.querySelectorAll('.toast');
-      toastElements.forEach(function (toastElement) {
-        var toast = new bootstrap.Toast(toastElement);
-        toast.show();
-      });
-      document.addEventListener('DOMContentLoaded', function () {
-        var deleteModal = document.getElementById('deleteModal');
-        var deleteForm = document.getElementById('deleteDepartmentForm');
-        var nameToDeleteSpan = document.getElementById('nameToDelete');
+        table.on('draw.dt', function () {
+          initTooltips();
+        });
+        
+        document.querySelectorAll('.toast').forEach(function (toastElement) {
+          var toast = new bootstrap.Toast(toastElement);
+          toast.show();
+        });
 
-        deleteModal.addEventListener('show.bs.modal', function (event) {
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
           var departmentId = button.getAttribute('data-departmentid');
           var name = button.getAttribute('data-name');
-          nameToDeleteSpan.textContent = name;
-          deleteForm.setAttribute('action', '<?php echo site_url("departments/delete/"); ?>' + departmentIdId);
+          document.getElementById('nameToDelete').textContent = name;
+          document.getElementById('deleteDepartmentForm').setAttribute('action', '<?php echo site_url("departments/delete/"); ?>' + departmentId);
         });
       });
     </script>

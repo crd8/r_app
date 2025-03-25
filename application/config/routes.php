@@ -72,12 +72,16 @@ $route['permissions/list'] = 'permissions/index';
 $route['permissions/create'] = 'permissions/create';
 $route['permissions/store'] = 'permissions/store';
 $route['permisions/edit/(:any)'] = 'permisions/edit/$1';
+$route['permisions/update/(:any)'] = 'permisions/update/$1';
+$route['permisions/delete/(:any)'] = 'permisions/delete/$1';
 
 // custom routes for departments
 $route['departments/list'] = 'departments/index';
 $route['departments/create'] = 'departments/create';
 $route['departments/store'] = 'departments/store';
-
+$route['departments/edit/(:any)'] = 'departments/edit/$1';
+$route['departments/update/(:any)'] = 'departments/update/$1';
+$route['departments/delete/(:any)'] = 'departments/delete/$1';
 
 // Custom route for error 403
 $route['errors/error_403'] = 'errors/error_403';

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create Department</title>
+    <title>Edit Department</title>
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/bootstrap-icons.min.css'); ?>" rel="stylesheet">
   </head>
@@ -28,20 +28,20 @@
             <a href="<?php echo site_url('departments/list'); ?>" class="btn btn-sm btn-secondary mb-3">
               <i class="bi bi-arrow-left"></i> Back
             </a>
-            <form method="post" action="<?php echo site_url('departments/store'); ?>">
+            <form method="post" action="<?php echo site_url('departments/update/' . $department->id); ?>">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-              <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> Create a New Department</h5>
-              <h6 class="card-subtitle mb-4 text-body-secondary">Fill in the details below to create a new department</h6>
+              <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> Edit Department</h5>
+              <h6 class="card-subtitle mb-4 text-body-secondary">Update the details below to edit the department</h6>
                 <div class="mb-3">
                   <label for="name" class="form-label">Department name</label>
-                  <input type="text" class="form-control" id="name" name="name" value="<?php echo html_escape(set_value('name')); ?>" required>
+                  <input type="text" class="form-control" id="name" name="name" value="<?php echo html_escape(set_value('name', $department->name)); ?>" required>
                 </div>
                 <div class="mb-3">
                   <label for="description" class="form-label">Description</label>
-                  <textarea class="form-control" id="description" name="description" rows="4"><?php echo set_value('description'); ?></textarea>
+                  <textarea class="form-control" id="description" name="description" rows="4"><?php echo set_value('description', $department->description); ?></textarea>
                 </div>
               <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary btn-lg mt-3">Create department</button>
+                <button type="submit" class="btn btn-primary btn-lg mt-3">Update department</button>
               </div>
             </form>
           </div>

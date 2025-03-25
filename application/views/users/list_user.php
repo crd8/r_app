@@ -24,7 +24,7 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card bg-body col-12 border-0 shadow-sm mt-5">
+        <div class="card col-md-12 col-lg-9 border-0 bg-body shadow-sm mt-5">
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
@@ -36,7 +36,7 @@
               $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
               if (in_array($user_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('users/create'); ?>" class="btn btn-sm btn-primary"><i class="bi bi-person-add"></i> Create User</a>
+              <a href="<?php echo site_url('users/create'); ?>" class="btn btn-primary"><i class="bi bi-person-add"></i> Create User</a>
               <?php endif; ?>
             </div>
             <hr>
@@ -76,8 +76,10 @@
                         $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
                         if (in_array($user_delete_permission_id, $session_permissions)):
                       ?>
-                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="<?php echo $user->id; ?>" data-username="<?php echo $user->username; ?>" title="Delete">
-                        <i class="bi bi-trash text-danger-emphasis"></i>
+                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="<?php echo html_escape($user->id); ?>" data-username="<?php echo html_escape($user->username); ?>">
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                          <i class="bi bi-trash"></i>
+                        </span>
                       </a>
                       <?php endif; ?>
                     </td>
@@ -118,32 +120,35 @@
     <script src="<?php echo base_url('assets/js/dataTables.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/dataTables.bootstrap5.min.js'); ?>"></script>
     <script>
-      $(document).ready(function() {
-        $('#dataTablesUsers').DataTable();
-      });
+      $(document).ready(function () {
+        var table = $('#dataTablesUsers').DataTable({
+          order: []
+        });
 
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-      });
+        function initTooltips() {
+          var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+          tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+          });
+        }
+        
+        initTooltips();
 
-      var toastElements = document.querySelectorAll('.toast');
-      toastElements.forEach(function (toastElement) {
-        var toast = new bootstrap.Toast(toastElement);
-        toast.show();
-      });
-      
-      document.addEventListener('DOMContentLoaded', function () {
-        var deleteModal = document.getElementById('deleteModal');
-        var deleteForm = document.getElementById('deleteUserForm');
-        var usernameToDeleteSpan = document.getElementById('usernameToDelete');
+        table.on('draw.dt', function () {
+          initTooltips();
+        });
+        
+        document.querySelectorAll('.toast').forEach(function (toastElement) {
+          var toast = new bootstrap.Toast(toastElement);
+          toast.show();
+        });
 
-        deleteModal.addEventListener('show.bs.modal', function (event) {
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
           var userId = button.getAttribute('data-userid');
           var username = button.getAttribute('data-username');
-          usernameToDeleteSpan.textContent = username;
-          deleteForm.setAttribute('action', '<?php echo site_url("users/delete/"); ?>' + userId);
+          document.getElementById('usernameToDelete').textContent = username;
+          document.getElementById('deleteUserForm').setAttribute('action', '<?php echo site_url("users/delete/"); ?>' + userId);
         });
       });
     </script>

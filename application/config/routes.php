@@ -56,26 +56,28 @@ $route['translate_uri_dashes'] = FALSE;
 // Custom routes for user & authentication
 $route['register'] = 'users/create';
 $route['login'] = 'users/login';
+$route['users/authenticate'] = 'users/authenticate';
 $route['logout'] = 'users/logout';
 $route['dashboard'] = 'users/dashboard';
 $route['profile'] = 'users/edit_profile';
+$route['users/list'] = 'users/index';
 $route['users/create'] = 'users/create';
 $route['users/store'] = 'users/store';
 $route['users/edit/(:any)'] = 'users/edit/$1';
 $route['users/update/(:any)'] = 'users/update/$1';
 $route['users/delete/(:any)'] = 'users/delete/$1';
-$route['users/list'] = 'users/index';
-$route['users/authenticate'] = 'users/authenticate';
 
 // custom routes for permissions
+$route['permissions/list'] = 'permissions/index';
 $route['permissions/create'] = 'permissions/create';
 $route['permissions/store'] = 'permissions/store';
-$route['permissions/list'] = 'permissions/index';
+$route['permisions/edit/(:any)'] = 'permisions/edit/$1';
 
 // custom routes for departments
+$route['departments/list'] = 'departments/index';
 $route['departments/create'] = 'departments/create';
 $route['departments/store'] = 'departments/store';
-$route['departments/list'] = 'departments/index';
+
 
 // Custom route for error 403
 $route['errors/error_403'] = 'errors/error_403';

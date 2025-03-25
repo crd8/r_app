@@ -25,7 +25,7 @@
       <div class="d-flex justify-content-center">
         <div class="card col-md-10 col-lg-10 border-0 bg-body shadow-sm mt-5">
           <div class="card-body p-md-4 p-xl-5">
-            <a href="<?php echo site_url('users/list'); ?>" class="btn btn-secondary btn-sm mb-3">
+            <a href="<?php echo site_url('users/list'); ?>" class="btn btn-secondary mb-3">
               <i class="bi bi-arrow-left"></i> Back
             </a>
             <form method="post" action="<?php echo site_url('users/update/' . $user->id); ?>">

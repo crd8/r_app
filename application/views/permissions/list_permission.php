@@ -24,7 +24,7 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card bg-body col-12 border-0 shadow-sm mt-5">
+        <div class="card col-md-12 col-lg-9 border-0 bg-body shadow-sm mt-5">
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
@@ -45,7 +45,6 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase" scope="col">Permission Name</th>
-                    <th class="text-uppercase" scope="col">Description</th>
                     <th class="text-uppercase" scope="col">Created At</th>
                     <th class="text-uppercase" scope="col">Updated At</th>
                     <th class="text-uppercase">Option</th>
@@ -54,8 +53,10 @@
                 <tbody>
                   <?php foreach ($permissions as $permission): ?>
                   <tr>
-                    <td><div><?php echo html_escape($permission->name); ?></div></td>
-                    <td><?php echo html_escape($permission->description); ?></td>
+                    <td>
+                      <div><?php echo html_escape($permission->name); ?></div>
+                      <div class="text-body-secondary"><small><?php echo html_escape($permission->description); ?></small></div>
+                    </td>
                     <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->created_at))); ?></td>
                     <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->updated_at))); ?></td>
                     <td>
@@ -64,7 +65,7 @@
                       $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
                       if (in_array($permission_edit_permission_id, $session_permissions)):
                       ?>
-                      <a href="<?php echo site_url('permission/edit/' . $permission->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                      <a href="<?php echo site_url('permissions/edit/' . $permission->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                         <i class="bi bi-pencil-square text-warning-emphasis"></i>
                       </a>
                       <?php endif; ?>
@@ -74,7 +75,9 @@
                         if (in_array($permission_delete_permission_id, $session_permissions)):
                       ?>
                       <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-permissionid="<?php echo $permission->id; ?>" data-name="<?php echo $permission->name; ?>">
-                        <i class="bi bi-trash text-danger-emphasis"></i>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                          <i class="bi bi-trash"></i>
+                        </span>
                       </a>
                       <?php endif; ?>
                     </td>
@@ -115,32 +118,35 @@
     <script src="<?php echo base_url('assets/js/dataTables.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/dataTables.bootstrap5.min.js'); ?>"></script>
     <script>
-      $(document).ready(function() {
-        $('#dataTablesPermissions').DataTable();
-      });
+      $(document).ready(function () {
+        var table = $('#dataTablesPermissions').DataTable({
+          order: []
+        });
 
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-      });
+        function initTooltips() {
+          var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+          tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+          });
+        }
+        
+        initTooltips();
 
-      var toastElements = document.querySelectorAll('.toast');
-      toastElements.forEach(function (toastElement) {
-        var toast = new bootstrap.Toast(toastElement);
-        toast.show();
-      });
+        table.on('draw.dt', function () {
+          initTooltips();
+        });
+        
+        document.querySelectorAll('.toast').forEach(function (toastElement) {
+          var toast = new bootstrap.Toast(toastElement);
+          toast.show();
+        });
 
-      document.addEventListener('DOMContentLoaded', function () {
-        var deleteModal = document.getElementById('deleteModal');
-        var deleteForm = document.getElementById('deletePermissionForm');
-        var nameToDeleteSpan = document.getElementById('nameToDelete');
-
-        deleteModal.addEventListener('show.bs.modal', function (event) {
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
           var permissionId = button.getAttribute('data-permissionid');
           var name = button.getAttribute('data-name');
-          nameToDeleteSpan.textContent = name;
-          deleteForm.setAttribute('action', '<?php echo site_url("permissions/delete/"); ?>' + permissionId);
+          document.getElementById('nameToDelete').textContent = name;
+          document.getElementById('deletePermissionForm').setAttribute('action', '<?php echo site_url("permissions/delete/"); ?>' + permissionId);
         });
       });
     </script>

@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends CI_Model {
 
   public function get_all_users() {
+    $this->db->order_by('created_at', 'DESC');
     $query = $this->db->get('users');
     return $query->result();
   }

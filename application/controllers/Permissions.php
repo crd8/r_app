@@ -75,6 +75,54 @@ class Permissions extends CI_Controller {
     }
   }
 
+  public function edit($id) {
+    if (!$this->session->userdata('user_id')) {
+      redirect('login');
+    }
+
+    $data['permission'] = $this->Permission_model->get_permission_by_id($id);
+    if (!$data['permission']) {
+      redirect('errors/error_404');
+    }
+
+    $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
+
+    if (!in_array($permission_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+
+    $this->load->view('permissions/edit_permission', $data);
+  }
+
+  public function update($id) {
+    $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
+
+    if (!in_array($permission_edit_permission_id, $this->session->userdata('permissions'))) {
+      redirect('errors/error_403');
+    }
+  
+    $this->form_validation->set_rules('name', 'Permission name', 'required');
+    $this->form_validation->set_rules('description', 'Description', 'required');
+  
+    if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('permissions/edit/' . $id);
+    } else {
+      $name = $this->input->post('name', TRUE);
+      $description = $this->input->post('description', TRUE);
+  
+      $data = array(
+        'name' => $name,
+        'description' => $description,
+      );
+  
+      $this->Permission_model->update_permission($id, $data);
+      
+      $this->session->set_flashdata('success', 'Permission updated successfully');
+      redirect('permissions/list');
+    }
+  }
+
   public function delete($id) {
     if ($this->input->server('REQUEST_METHOD') !== 'POST') {
       redirect('errors/error_403');

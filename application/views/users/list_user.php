@@ -24,7 +24,7 @@
         </div>
       <?php endif; ?>
       <div class="d-flex justify-content-center">
-        <div class="card col-md-12 col-lg-9 border-0 bg-body shadow-sm mt-5">
+        <div class="card col-md-12 col-lg-12 border-0 bg-body shadow-sm mt-5">
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
@@ -44,8 +44,9 @@
               <table class="table table-hover align-middle" id="dataTablesUsers">
                 <thead>
                   <tr>
-                    <th class="text-uppercase" scope="col">Fullname</th>
-                    <th class="text-uppercase" scope="col">Username</th>
+                    <th class="text-uppercase" scope="col">Account Name</th>
+                    <th class="text-uppercase" scope="col">Email</th>
+                    <th class="text-uppercase" scope="col">Department</th>
                     <th class="text-uppercase" scope="col">Created At</th>
                     <th class="text-uppercase" scope="col">Updated At</th>
                     <th class="text-uppercase">Option</th>
@@ -56,9 +57,18 @@
                   <tr>
                     <td>
                       <div><?php echo html_escape($user->fullname); ?></div>
-                      <div class="text-body-secondary" style="font-size: smaller;"><?php echo html_escape($user->email); ?></div>
+                      <div class="text-body-secondary" style="font-size: smaller;">@<?php echo html_escape($user->username); ?></div>
                     </td>
-                    <td><?php echo $user->username; ?></td>
+                    <td><?php echo html_escape($user->email); ?></td>
+                    <td>
+                      <?php 
+                        if (!empty($user->department_id) && isset($departments[$user->department_id])) {
+                          echo html_escape($departments[$user->department_id]);
+                        } else {
+                          echo '<span class="badge text-bg-warning">User does not have any departments yet</span>';
+                        }
+                      ?>
+                    </td>
                     <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
                     <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
                     <td>

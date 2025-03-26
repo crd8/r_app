@@ -52,6 +52,18 @@
               </div>
               <div class="row">
                 <div class="col-md-4 mb-3">
+                  <label for="department" class="form-label">Department</label>
+                  <select class="form-control" id="department" name="department">
+                    <option value="">Select Department</option>
+                    <?php foreach ($departments as $department): ?>
+                      <option value="<?php echo html_escape($department->id); ?>" 
+                        <?php echo set_value('department') == $department->id ? 'selected' : ''; ?>>
+                        <?php echo html_escape($department->name); ?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
                   <label for="password" class="form-label">
                     Password <small class="text-muted">(min. 6 characters)</small>
                   </label>

@@ -48,6 +48,18 @@
               </div>
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
+                  <label for="department" class="form-label">Department</label>
+                  <select class="form-control" id="department" name="department" required>
+                    <option value="">Select Department</option>
+                    <?php foreach ($departments as $dept): ?>
+                      <option value="<?php echo html_escape($dept->id); ?>" 
+                        <?php echo (set_value('department', $user->department_id) == $dept->id) ? 'selected' : ''; ?>>
+                        <?php echo html_escape($dept->name); ?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
                   <label for="password" class="form-label">Password <small class="text-muted">(leave blank if not changing)</small></label>
                   <div class="position-relative">
                     <input type="password" class="form-control" id="password" name="password">

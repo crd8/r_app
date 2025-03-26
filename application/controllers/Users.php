@@ -6,6 +6,7 @@ class Users extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->model('User_model');
+    $this->load->model('Department_model');
     $this->load->library('session');
     $this->load->helper('cookie');
     $this->load->library('form_validation');
@@ -23,11 +24,20 @@ class Users extends CI_Controller {
     }
 
     $user_list_permission_id = $this->Permission_model->get_permission_id('user list');
-    if (!in_array($user_list_permission_id, $this->session->userdata('permissions'))) {
+    if (!in_array($user_list_permission_id, $userPermissions)) {
       redirect('errors/error_403');
     }
 
     $data['users'] = $this->User_model->get_all_users();
+
+    $departments = $this->Department_model->get_all_departments();
+    $dept_map = [];
+    if (!empty($departments)) {
+      foreach ($departments as $dept) {
+        $dept_map[$dept->id] = $dept->name;
+      }
+    }
+    $data['departments'] = $dept_map;
 
     $this->load->view('users/list_user', $data);
   }
@@ -181,23 +191,23 @@ class Users extends CI_Controller {
 
   public function create() {
     if (!$this->session->userdata('user_id')) {
-      redirect('login');
+        redirect('login');
     }
 
     $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
-
     if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+        redirect('errors/error_403');
     }
 
     $data['all_permissions'] = $this->Permission_model->get_all_permissions();
     $data['user_permissions'] = [];
+    $data['departments'] = $this->Department_model->get_all_departments(); 
+
     $this->load->view('users/create_user', $data);
   }
 
   public function store() {
     $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
-
     if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
@@ -207,17 +217,20 @@ class Users extends CI_Controller {
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
     $this->form_validation->set_rules('password', 'Password', 'required');
     $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
+    $this->form_validation->set_rules('department', 'Department', 'required');
 
     if ($this->form_validation->run() == FALSE) {
       $this->session->set_flashdata('error', validation_errors());
       $data['all_permissions'] = $this->Permission_model->get_all_permissions();
       $data['user_permissions'] = [];
+      $data['departments'] = $this->Department_model->get_all_departments();
       $this->load->view('users/create_user');
     } else {
       $username = $this->input->post('username', TRUE);
       $fullname = $this->input->post('fullname', TRUE);
       $password = $this->input->post('password', TRUE);
       $email = $this->input->post('email', TRUE);
+      $department_id = $this->input->post('department', TRUE);
 
       if ($this->User_model->get_user_by_username($username)) {
         $this->session->set_flashdata('error', 'Username already exists');
@@ -237,6 +250,7 @@ class Users extends CI_Controller {
           'fullname' => $fullname,
           'password' => password_hash($password, PASSWORD_BCRYPT),
           'email' => $email,
+          'department_id' => $department_id,
         );
 
         $this->User_model->insert_user($data);
@@ -266,6 +280,7 @@ class Users extends CI_Controller {
 
     $data['all_permissions'] = $this->Permission_model->get_all_permissions();
     $data['user_permissions'] = $this->User_model->get_user_permissions($id);
+    $data['departments'] = $this->Department_model->get_all_departments();
     $this->load->view('users/edit_user', $data);
   }
 
@@ -345,6 +360,7 @@ class Users extends CI_Controller {
     $this->form_validation->set_rules('username', 'Username', 'required');
     $this->form_validation->set_rules('fullname', 'Fullname', 'required');
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    $this->form_validation->set_rules('department', 'Department', 'required');
   
     if ($this->form_validation->run() == FALSE) {
       $this->session->set_flashdata('error', validation_errors());
@@ -353,6 +369,7 @@ class Users extends CI_Controller {
       $username = $this->input->post('username', TRUE);
       $fullname = $this->input->post('fullname', TRUE);
       $email = $this->input->post('email', TRUE);
+      $department = $this->input->post('department', TRUE);
       $password = $this->input->post('password', TRUE);
       $confirm_password = $this->input->post('confirm_password');
       $permissions = $this->input->post('permissions', TRUE);
@@ -361,6 +378,7 @@ class Users extends CI_Controller {
         'username' => $username,
         'fullname' => $fullname,
         'email' => $email,
+        'department_id' => $department
       );
   
       if (!empty($password)) {

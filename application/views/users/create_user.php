@@ -10,18 +10,29 @@
   <body class="bg-body-tertiary">
     <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container pt-5 mt-4">
-      <?php if ($this->session->flashdata('error')): ?>
-        <div class="toast-container position-fixed top-0 end-0 p-3">
-          <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-              <div class="toast-body">
-                <?php echo html_escape($this->session->flashdata('error')); ?>
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <?php
+        $errorHtml = $this->session->flashdata('error');
+        if ($errorHtml) {
+          preg_match_all('/<p>(.*?)<\/p>/', $errorHtml, $matches);
+          $errorMessages = $matches[1];
+          foreach ($errorMessages as $error) {
+            if (trim($error) !== '') {
+              ?>
+              <div class="toast align-items-center text-bg-danger border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    <?php echo html_escape($error); ?>
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
               </div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-          </div>
-        </div>
-      <?php endif; ?>
+              <?php
+            }
+          }
+        }
+        ?>
+      </div>
       <div class="d-flex justify-content-center">
         <div class="card col-md-10 col-lg-10 border-0 bg-body shadow-sm mt-5">
           <div class="card-body p-md-4 p-xl-5">
@@ -139,25 +150,25 @@
     
     <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
     <script>
-      var toastElements = document.querySelectorAll('.toast');
-      toastElements.forEach(function (toastElement) {
-        var toast = new bootstrap.Toast(toastElement);
-        toast.show();
-      });
-      
-      var togglePasswordIcons = document.querySelectorAll('.toggle-password');
-      togglePasswordIcons.forEach(function (icon) {
-        icon.addEventListener('click', function () {
-          var input = icon.previousElementSibling;
-          if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('bi-eye');
-            icon.classList.add('bi-eye-slash');
-          } else {
-            input.type = 'password';
-            icon.classList.remove('bi-eye-slash');
-            icon.classList.add('bi-eye');
-          }
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.toast').forEach(function (toastElement) {
+          var toast = new bootstrap.Toast(toastElement);
+          toast.show();
+        });
+        
+        document.querySelectorAll('.toggle-password').forEach(function (icon) {
+          icon.addEventListener('click', function () {
+            var input = icon.previousElementSibling;
+            if (input.type === 'password') {
+              input.type = 'text';
+              icon.classList.remove('bi-eye');
+              icon.classList.add('bi-eye-slash');
+            } else {
+              input.type = 'password';
+              icon.classList.remove('bi-eye-slash');
+              icon.classList.add('bi-eye');
+            }
+          });
         });
       });
     </script>

@@ -9,6 +9,20 @@ class User_model extends CI_Model {
     return $query->result();
   }
 
+  public function get_all_user_permissions() {
+    $this->db->select('user_permissions.user_id, permissions.name');
+    $this->db->from('user_permissions');
+    $this->db->join('permissions', 'permissions.id = user_permissions.permission_id');
+    $query = $this->db->get();
+    $results = $query->result();
+
+    $map = [];
+    foreach($results as $row) {
+      $map[$row->user_id][] = $row->name;
+    }
+    return $map;
+  }
+
   public function get_logged_in_users() {
     $this->db->where('is_logged_in', TRUE);
     $query = $this->db->get('users');

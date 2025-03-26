@@ -20,7 +20,7 @@ class Users extends CI_Controller {
 
     $userPermissions = $this->session->userdata('permissions');
     if (!$userPermissions || !is_array($userPermissions)) {
-        redirect('errors/error_403');
+      redirect('errors/error_403');
     }
 
     $user_list_permission_id = $this->Permission_model->get_permission_id('user list');
@@ -38,6 +38,8 @@ class Users extends CI_Controller {
       }
     }
     $data['departments'] = $dept_map;
+
+    $data['user_permissions_map'] = $this->User_model->get_all_user_permissions();
 
     $this->load->view('users/list_user', $data);
   }
@@ -217,31 +219,34 @@ class Users extends CI_Controller {
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
     $this->form_validation->set_rules('password', 'Password', 'required');
     $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-    $this->form_validation->set_rules('department', 'Department', 'required');
+    $this->form_validation->set_rules('department', 'Department Name');
 
     if ($this->form_validation->run() == FALSE) {
       $this->session->set_flashdata('error', validation_errors());
       $data['all_permissions'] = $this->Permission_model->get_all_permissions();
       $data['user_permissions'] = [];
       $data['departments'] = $this->Department_model->get_all_departments();
-      $this->load->view('users/create_user');
+      $this->load->view('users/create_user', $data);
     } else {
       $username = $this->input->post('username', TRUE);
       $fullname = $this->input->post('fullname', TRUE);
       $password = $this->input->post('password', TRUE);
       $email = $this->input->post('email', TRUE);
       $department_id = $this->input->post('department', TRUE);
+      $department_id = !empty($department_id) ? $department_id : NULL;
 
       if ($this->User_model->get_user_by_username($username)) {
         $this->session->set_flashdata('error', 'Username already exists');
         $data['all_permissions'] = $this->Permission_model->get_all_permissions();
         $data['user_permissions'] = [];
-        $this->load->view('users/create_user');
+        $data['departments'] = $this->Department_model->get_all_departments();
+        $this->load->view('users/create_user', $data);
       } elseif ($this->User_model->get_user_by_email($email)) {
         $this->session->set_flashdata('error', 'Email already exists');
         $data['all_permissions'] = $this->Permission_model->get_all_permissions();
         $data['user_permissions'] = [];
-        $this->load->view('users/create_user');
+        $data['departments'] = $this->Department_model->get_all_departments();
+        $this->load->view('users/create_user', $data);
       } else {
         $new_user_id = generate_uuid();
         $data = array(

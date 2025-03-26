@@ -10,7 +10,7 @@
   </head>
   <body class="bg-body-tertiary">
   <?php $this->load->view('partials/navbar.php'); ?>
-    <div class="container pt-5 mt-4">
+    <div class="container-fluid pt-5 mt-4">
       <?php if ($this->session->flashdata('success')): ?>
         <div class="toast-container position-fixed top-0 end-0 p-3">
           <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -44,23 +44,24 @@
               <table class="table table-hover align-middle" id="dataTablesUsers">
                 <thead>
                   <tr>
-                    <th class="text-uppercase" scope="col">Account Name</th>
-                    <th class="text-uppercase" scope="col">Email</th>
-                    <th class="text-uppercase" scope="col">Department</th>
-                    <th class="text-uppercase" scope="col">Created At</th>
-                    <th class="text-uppercase" scope="col">Updated At</th>
-                    <th class="text-uppercase">Option</th>
+                    <th scope="col">Account Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Permission Access</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Updated At</th>
+                    <th>Option</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php foreach ($users as $user): ?>
                   <tr>
                     <td>
-                      <div><?php echo html_escape($user->fullname); ?></div>
+                      <div class="fw-bold"><?php echo html_escape($user->fullname); ?></div>
                       <div class="text-body-secondary" style="font-size: smaller;">@<?php echo html_escape($user->username); ?></div>
                     </td>
-                    <td><?php echo html_escape($user->email); ?></td>
-                    <td>
+                    <td class="text-body-secondary"><?php echo html_escape($user->email); ?></td>
+                    <td class="text-body-secondary">
                       <?php 
                         if (!empty($user->department_id) && isset($departments[$user->department_id])) {
                           echo html_escape($departments[$user->department_id]);
@@ -69,8 +70,17 @@
                         }
                       ?>
                     </td>
-                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
-                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
+                    <td class="text-body-secondary">
+                      <?php if (isset($user_permissions_map[$user->id]) && !empty($user_permissions_map[$user->id])): ?>
+                        <?php foreach ($user_permissions_map[$user->id] as $perm): ?>
+                          <span class="badge text-bg-secondary"><?php echo html_escape($perm); ?></span>
+                        <?php endforeach; ?>
+                      <?php else: ?>
+                        <span class="badge text-bg-warning">User does not have any permissions access</span>
+                      <?php endif; ?>
+                    </td>
+                    <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
+                    <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
                     <td>
                       <?php
                       $session_permissions = $this->session->userdata('permissions');

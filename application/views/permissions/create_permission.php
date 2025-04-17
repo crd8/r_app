@@ -73,6 +73,11 @@
           createPermissionButtonText.classList.add('d-none');
           createPermissionButtonSpinner.classList.remove('d-none');
         });
+
+        var nameInput = document.getElementById('name');
+        nameInput.addEventListener('input', function (e) {
+          this.value = this.value.toLowerCase();
+        });
       });
     </script>
   </body>

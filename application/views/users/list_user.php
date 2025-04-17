@@ -9,7 +9,7 @@
     <link href="<?php echo base_url('assets/css/dataTables.bootstrap5.min.css'); ?>" rel="stylesheet">
   </head>
   <body class="bg-body-tertiary">
-  <?php $this->load->view('partials/navbar.php'); ?>
+    <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container-fluid pt-5 mt-4">
       <?php if ($this->session->flashdata('success')): ?>
         <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -32,11 +32,11 @@
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active users account in system</h6>
               </div>
               <?php
-              $session_permissions = $this->session->userdata('permissions');
-              $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
-              if (in_array($user_create_permission_id, $session_permissions)):
+                $session_permissions = $this->session->userdata('permissions');
+                $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+                if (in_array($user_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('users/create'); ?>" class="btn btn-primary"><i class="bi bi-person-add"></i> Create User</a>
+                <a href="<?php echo site_url('users/create'); ?>" class="btn btn-primary fw-semibold"><i class="bi bi-person-add"></i> Create User</a>
               <?php endif; ?>
             </div>
             <hr>
@@ -55,55 +55,55 @@
                 </thead>
                 <tbody>
                   <?php foreach ($users as $user): ?>
-                  <tr>
-                    <td>
-                      <div class="fw-bold"><?php echo html_escape($user->fullname); ?></div>
-                      <div class="text-body-secondary" style="font-size: smaller;">@<?php echo html_escape($user->username); ?></div>
-                    </td>
-                    <td class="text-body-secondary"><?php echo html_escape($user->email); ?></td>
-                    <td class="text-body-secondary">
-                      <?php 
-                        if (!empty($user->department_id) && isset($departments[$user->department_id])) {
-                          echo html_escape($departments[$user->department_id]);
-                        } else {
-                          echo '<span class="badge text-bg-warning">User does not have any departments yet</span>';
-                        }
-                      ?>
-                    </td>
-                    <td class="text-body-secondary">
-                      <?php if (isset($user_permissions_map[$user->id]) && !empty($user_permissions_map[$user->id])): ?>
-                        <?php foreach ($user_permissions_map[$user->id] as $perm): ?>
-                          <span class="badge text-bg-secondary"><?php echo html_escape($perm); ?></span>
-                        <?php endforeach; ?>
-                      <?php else: ?>
-                        <span class="badge text-bg-warning">User does not have any permissions access</span>
-                      <?php endif; ?>
-                    </td>
-                    <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
-                    <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
-                    <td>
-                      <?php
-                      $session_permissions = $this->session->userdata('permissions');
-                      $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
-                      if (in_array($user_edit_permission_id, $session_permissions)):
-                      ?>
-                      <a href="<?php echo site_url('users/edit/' . $user->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                        <i class="bi bi-pencil-square text-warning-emphasis"></i>
-                      </a>
-                      <?php endif; ?>
-                      <?php
-                        $session_permissions = $this->session->userdata('permissions');
-                        $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
-                        if (in_array($user_delete_permission_id, $session_permissions)):
-                      ?>
-                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="<?php echo html_escape($user->id); ?>" data-username="<?php echo html_escape($user->username); ?>">
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                          <i class="bi bi-trash"></i>
-                        </span>
-                      </a>
-                      <?php endif; ?>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td>
+                        <div class="fw-bold"><?php echo html_escape($user->fullname); ?></div>
+                        <div class="text-body-secondary" style="font-size: smaller;">@<?php echo html_escape($user->username); ?></div>
+                      </td>
+                      <td class="text-body-secondary"><?php echo html_escape($user->email); ?></td>
+                      <td class="text-body-secondary">
+                        <?php 
+                          if (!empty($user->department_id) && isset($departments[$user->department_id])) {
+                            echo html_escape($departments[$user->department_id]);
+                          } else {
+                            echo '<span class="badge text-bg-warning">User does not have any departments yet</span>';
+                          }
+                        ?>
+                      </td>
+                      <td class="text-body-secondary">
+                        <?php if (isset($user_permissions_map[$user->id]) && !empty($user_permissions_map[$user->id])): ?>
+                          <?php foreach ($user_permissions_map[$user->id] as $perm): ?>
+                            <span class="badge text-bg-secondary"><?php echo html_escape($perm); ?></span>
+                          <?php endforeach; ?>
+                        <?php else: ?>
+                          <span class="badge text-bg-warning">User does not have any permissions access</span>
+                        <?php endif; ?>
+                      </td>
+                      <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
+                      <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
+                      <td>
+                        <?php
+                          $session_permissions = $this->session->userdata('permissions');
+                          $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+                          if (in_array($user_edit_permission_id, $session_permissions)):
+                        ?>
+                          <a href="<?php echo site_url('users/edit/' . $user->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil-square text-warning-emphasis"></i>
+                          </a>
+                        <?php endif; ?>
+                        <?php
+                          $session_permissions = $this->session->userdata('permissions');
+                          $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
+                          if (in_array($user_delete_permission_id, $session_permissions)):
+                        ?>
+                          <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="<?php echo html_escape($user->id); ?>" data-username="<?php echo html_escape($user->username); ?>">
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                              <i class="bi bi-trash"></i>
+                            </span>
+                          </a>
+                        <?php endif; ?>
+                      </td>
+                    </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
@@ -112,7 +112,6 @@
         </div>
       </div>
     </div>
-    <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content">
@@ -128,7 +127,10 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <form id="deleteUserForm" action="" method="post" style="display: inline;">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <button type="submit" class="btn btn-danger" id="buttonDeleteUser">
+                <span id="buttonDeleteUserText">Delete</span>
+                <span id="buttonDeleteUserSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+              </button>
             </form>
           </div>
         </div>
@@ -169,6 +171,16 @@
           var username = button.getAttribute('data-username');
           document.getElementById('usernameToDelete').textContent = username;
           document.getElementById('deleteUserForm').setAttribute('action', '<?php echo site_url("users/delete/"); ?>' + userId);
+        });
+
+        var deleteUserForm = document.getElementById('deleteUserForm');
+        var buttonDeleteUser = document.getElementById('buttonDeleteUser');
+        var buttonDeleteUserText = document.getElementById('buttonDeleteUserText');
+        var buttonDeleteUserSpinner = document.getElementById('buttonDeleteUserSpinner');
+        deleteUserForm.addEventListener('submit', function () {
+          buttonDeleteUser.disabled = true;
+          buttonDeleteUserText.classList.add('d-none');
+          buttonDeleteUserSpinner.classList.remove('d-none');
         });
       });
     </script>

@@ -75,10 +75,11 @@
                       if (in_array($list_users_permission_id, $session_permissions)):
                     ?>
                     
-                    <form action="<?php echo site_url('users/force_logout/' . $user->id); ?>" method="post" style="display: inline;">
+                    <form action="<?php echo site_url('users/force_logout/' . $user->id); ?>" method="post" style="display: inline;" id="forceLogoutForm">
                       <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-                      <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="bi bi-box-arrow-left"></i> Force Logout
+                      <button type="submit" class="btn btn-danger btn-sm fw-semibold" id="forceLogoutButton">
+                        <span id="forceLogoutButtonText"><i class="bi bi-box-arrow-left"></i> Force Logout</span>
+                        <span id="forceLogoutButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                       </button>
                     </form>
                     <?php endif; ?>
@@ -96,6 +97,16 @@
       toastElements.forEach(function (toastElement) {
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
+      });
+
+      var forceLogoutForm = document.getElementById('forceLogoutForm');
+      var forceLogoutButton = document.getElementById('forceLogoutButton');
+      var forceLogoutButtonText = document.getElementById('forceLogoutButtonText');
+      var forceLogoutButtonSpinner = document.getElementById('forceLogoutButtonSpinner');
+      forceLogoutForm.addEventListener('submit', function () {
+        forceLogoutButton.disabled = true;
+        forceLogoutButtonText.classList.add('d-none');
+        forceLogoutButtonSpinner.classList.remove('d-none');
       });
     </script>
   </body>

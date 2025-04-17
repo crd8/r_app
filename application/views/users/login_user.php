@@ -41,6 +41,9 @@
                   <label for="floatingPassword">Password</label>
                   <i class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3" id="togglePassword" style="cursor: pointer;"></i>
                 </div>
+                <div id="capsLockWarning" class="text-danger small fw-semibold mb-2 text-start" style="display: none;">
+                  Caps Lock is on
+                </div>
                 <div class="d-flex justify-content-between mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="remember" name="remember" <?php echo get_cookie('remember_username') ? 'checked' : ''; ?>>
@@ -48,7 +51,7 @@
                       Remember me
                     </label>
                   </div>
-                  <a href="" class="link-primary text-decoration-none">Forgot password?</a>
+                  <!-- <a href="" class="link-primary text-decoration-none">Forgot password?</a> -->
                 </div>
                 <div class="d-grid gap-2 mb-3">
                   <button type="submit" class="btn btn-lg fw-semibold btn-primary" id="loginButton">
@@ -103,7 +106,6 @@
         var darkModeToggle = document.getElementById('darkModeToggle');
         var htmlElement = document.documentElement;
 
-        // Muat preferensi mode dari localStorage
         if (localStorage.getItem('theme') === 'dark') {
           htmlElement.setAttribute('data-bs-theme', 'dark');
           darkModeToggle.classList.remove('bi-moon-stars-fill');
@@ -126,6 +128,24 @@
             darkModeToggle.classList.add('bi-sun-fill');
             localStorage.setItem('theme', 'dark');
           }
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var passwordInput = document.getElementById('floatingPassword');
+        var capsWarning = document.getElementById('capsLockWarning');
+
+        passwordInput.addEventListener('keyup', function (e) {
+          if (e.getModifierState && e.getModifierState('CapsLock')) {
+            capsWarning.style.display = 'block';
+          } else {
+            capsWarning.style.display = 'none';
+          }
+        });
+
+        passwordInput.addEventListener('blur', function () {
+          capsWarning.style.display = 'none';
         });
       });
     </script>

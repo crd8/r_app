@@ -33,7 +33,6 @@ class Permissions extends CI_Controller {
     }
 
     $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
-
     if (!in_array($permission_create_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
@@ -43,36 +42,43 @@ class Permissions extends CI_Controller {
 
   public function store() {
     $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
-
     if (!in_array($permission_create_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
 
-    $this->form_validation->set_rules('name', 'Name', 'required');
+    $this->form_validation->set_rules('name', 'Permission Name', 'required|callback_unique_permission_name');
     $this->form_validation->set_rules('description', 'Description', 'required');
 
     if ($this->form_validation->run() == FALSE) {
-      $this->session->set_flashdata('error', validation_errors());
-      $this->load->view('permissions/create_permission');
+      $data = [
+        'errorMessage'    => 'Failed to create permission. Please fix the errors below.',
+      ];
+      $this->load->view('permissions/create_permission', $data);
     } else {
-      $name = $this->input->post('name');
-      $description = $this->input->post('description');
+      $name = $this->input->post('name', TRUE);
+      $description = $this->input->post('description', TRUE);
+      $data = array(
+        'id' => generate_uuid(),
+        'name' => $name,
+        'description' => $description,
+      );
 
-      if ($this->Permission_model->get_permission_by_name($name)) {
-        $this->session->set_flashdata('error', 'Permission already exists');
-        $this->load->view('permissions/create_permission');
-      } else {
-        $data = array(
-          'id' => generate_uuid(),
-          'name' => $name,
-          'description' => $description,
-        );
-
-        $this->Permission_model->insert_permission($data);
-        $this->session->set_flashdata('success', 'Permission created successfully');
-        redirect('permissions/list');
-      }
+      $this->Permission_model->insert_permission($data);
+      $this->session->set_flashdata('success', 'Permission created successfully');
+      redirect('permissions/list');
     }
+  }
+
+  public function unique_permission_name($name, $id = null) {
+    $u = $this->Permission_model->get_permission_by_name($name);
+    if ($u && $u->id != $id) {
+      $this->form_validation->set_message(
+        'unique_permission_name',
+        'Permission name already exists'
+      );
+      return FALSE;
+    }
+    return TRUE;
   }
 
   public function edit($id) {
@@ -86,7 +92,6 @@ class Permissions extends CI_Controller {
     }
 
     $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
-
     if (!in_array($permission_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
@@ -96,27 +101,34 @@ class Permissions extends CI_Controller {
 
   public function update($id) {
     $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
-
     if (!in_array($permission_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
+
+    $permission = $this->Permission_model->get_permission_by_id($id);
+    if (! $permission) {
+      redirect('errors/error_404');
+    }
   
-    $this->form_validation->set_rules('name', 'Permission name', 'required');
+    $this->form_validation->set_rules('name', 'Permission Name', "required|callback_unique_permission_name[{$id}]");
     $this->form_validation->set_rules('description', 'Description', 'required');
   
     if ($this->form_validation->run() == FALSE) {
-      $this->session->set_flashdata('error', validation_errors());
-      redirect('permissions/edit/' . $id);
+      $data = [
+        'errorMessage' => 'Failed to update permission. Please fix the errors below.',
+        'permission' => $permission,
+      ];
+      $this->load->view('permissions/edit_permission', $data);
     } else {
       $name = $this->input->post('name', TRUE);
       $description = $this->input->post('description', TRUE);
   
-      $data = array(
+      $update = array(
         'name' => $name,
         'description' => $description,
       );
   
-      $this->Permission_model->update_permission($id, $data);
+      $this->Permission_model->update_permission($id, $update);
       
       $this->session->set_flashdata('success', 'Permission updated successfully');
       redirect('permissions/list');

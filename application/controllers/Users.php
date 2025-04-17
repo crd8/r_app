@@ -290,7 +290,6 @@ class Users extends CI_Controller {
     }
 
     $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
-
     if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect('errors/error_403');
     }
@@ -441,7 +440,7 @@ class Users extends CI_Controller {
 
     $this->User_model->delete_user($id);
     $this->session->set_flashdata('success', 'User deleted successfully');
-    
+
     redirect('users/list');
   }
 }

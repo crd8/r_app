@@ -124,7 +124,7 @@
               </div>
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg fw-semibold mt-3" id="updateButton">
-                  <span id="UpdateUserButtonText">Create</span>
+                  <span id="UpdateUserButtonText">Update</span>
                   <span id="updateUserButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                 </button>
               </div>

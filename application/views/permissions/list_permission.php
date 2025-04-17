@@ -9,7 +9,7 @@
     <link href="<?php echo base_url('assets/css/dataTables.bootstrap5.min.css'); ?>" rel="stylesheet">
   </head>
   <body class="bg-body-tertiary">
-  <?php $this->load->view('partials/navbar.php'); ?>
+    <?php $this->load->view('partials/navbar.php'); ?>
     <div class="container pt-5 mt-4">
       <?php if ($this->session->flashdata('success')): ?>
         <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -32,11 +32,11 @@
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active permissions in system</h6>
               </div>
               <?php
-              $session_permissions = $this->session->userdata('permissions');
-              $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
-              if (in_array($permission_create_permission_id, $session_permissions)):
+                $session_permissions = $this->session->userdata('permissions');
+                $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
+                if (in_array($permission_create_permission_id, $session_permissions)):
               ?>
-              <a href="<?php echo site_url('permissions/create'); ?>" class="btn btn-primary"><i class="bi bi-shield-plus"></i> Create Permission</a>
+                <a href="<?php echo site_url('permissions/create'); ?>" class="btn btn-primary fw-semibold"><i class="bi bi-shield-plus"></i> Create Permission</a>
               <?php endif; ?>
             </div>
             <hr>
@@ -44,44 +44,44 @@
               <table class="table table-hover align-middle" id="dataTablesPermissions">
                 <thead>
                   <tr>
-                    <th class="text-uppercase" scope="col">Permission Name</th>
-                    <th class="text-uppercase" scope="col">Created At</th>
-                    <th class="text-uppercase" scope="col">Updated At</th>
-                    <th class="text-uppercase">Option</th>
+                    <th scope="col">Permission Name</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Updated At</th>
+                    <th>Option</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php foreach ($permissions as $permission): ?>
-                  <tr>
-                    <td>
-                      <div><?php echo html_escape($permission->name); ?></div>
-                      <div class="text-body-secondary"><small><?php echo html_escape($permission->description); ?></small></div>
-                    </td>
-                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->created_at))); ?></td>
-                    <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->updated_at))); ?></td>
-                    <td>
-                      <?php
-                      $session_permissions = $this->session->userdata('permissions');
-                      $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
-                      if (in_array($permission_edit_permission_id, $session_permissions)):
-                      ?>
-                      <a href="<?php echo site_url('permissions/edit/' . $permission->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                        <i class="bi bi-pencil-square text-warning-emphasis"></i>
-                      </a>
-                      <?php endif; ?>
-                      <?php
-                        $session_permissions = $this->session->userdata('permissions');
-                        $permission_delete_permission_id = $this->Permission_model->get_permission_id('permission delete');
-                        if (in_array($permission_delete_permission_id, $session_permissions)):
-                      ?>
-                      <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-permissionid="<?php echo $permission->id; ?>" data-name="<?php echo $permission->name; ?>">
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                          <i class="bi bi-trash"></i>
-                        </span>
-                      </a>
-                      <?php endif; ?>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td>
+                        <div><?php echo html_escape($permission->name); ?></div>
+                        <div class="text-body-secondary small"><?php echo html_escape($permission->description); ?></div>
+                      </td>
+                      <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->created_at))); ?></td>
+                      <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($permission->updated_at))); ?></td>
+                      <td>
+                        <?php
+                          $session_permissions = $this->session->userdata('permissions');
+                          $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
+                          if (in_array($permission_edit_permission_id, $session_permissions)):
+                        ?>
+                          <a href="<?php echo site_url('permissions/edit/' . $permission->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil-square text-warning-emphasis"></i>
+                          </a>
+                        <?php endif; ?>
+                        <?php
+                          $session_permissions = $this->session->userdata('permissions');
+                          $permission_delete_permission_id = $this->Permission_model->get_permission_id('permission delete');
+                          if (in_array($permission_delete_permission_id, $session_permissions)):
+                        ?>
+                          <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-permissionid="<?php echo $permission->id; ?>" data-name="<?php echo $permission->name; ?>">
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                              <i class="bi bi-trash"></i>
+                            </span>
+                          </a>
+                        <?php endif; ?>
+                      </td>
+                    </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
@@ -90,7 +90,6 @@
         </div>
       </div>
     </div>
-    <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -100,19 +99,21 @@
           </div>
           <div class="modal-body">
             <p class="text-center">Are you sure you want to delete the permission with name <strong><span id="nameToDelete"></span></strong>?</p>
-            <p class="text-center text-danger">This action cannot be undone.</p>
+            <p class="text-center text-danger fw-semibold">This action cannot be undone.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-secondary fw-semibold" data-bs-dismiss="modal">Cancel</button>
             <form id="deletePermissionForm" action="" method="post" style="display: inline;">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <button type="submit" class="btn btn-danger fw-semibold" id="buttonDeletePermission">
+                <span id="buttonDeletePermissionText">Delete</span>
+                <span id="buttonDeletePermissionSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+              </button>
             </form>
           </div>
         </div>
       </div>
     </div>
-    <!-- End Modal -->
     <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery-3.7.1.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/dataTables.min.js'); ?>"></script>
@@ -147,6 +148,16 @@
           var name = button.getAttribute('data-name');
           document.getElementById('nameToDelete').textContent = name;
           document.getElementById('deletePermissionForm').setAttribute('action', '<?php echo site_url("permissions/delete/"); ?>' + permissionId);
+        });
+
+        var deletePermissionForm = document.getElementById('deletePermissionForm');
+        var buttonDeletePermission = document.getElementById('buttonDeletePermission');
+        var buttonDeletePermissionText = document.getElementById('buttonDeletePermissionText');
+        var buttonDeletePermissionSpinner = document.getElementById('buttonDeletePermissionSpinner');
+        deletePermissionForm.addEventListener('submit', function () {
+          buttonDeletePermission.disabled = true;
+          buttonDeletePermissionText.classList.add('d-none');
+          buttonDeletePermissionSpinner.classList.remove('d-none');
         });
       });
     </script>

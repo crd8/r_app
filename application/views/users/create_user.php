@@ -12,8 +12,7 @@
     <div class="container pt-5 mt-4">
       <div class="toast-container position-fixed top-0 end-0 p-3">
         <?php if (! empty($errorMessage)): ?>
-          <div class="toast align-items-center text-bg-danger border-0 mb-2"
-              role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+          <div class="toast align-items-center text-bg-danger border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
             <div class="d-flex">
               <div class="toast-body">
                 <?php echo html_escape($errorMessage); ?>

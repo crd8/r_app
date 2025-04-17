@@ -58,10 +58,10 @@
                     <tr>
                       <td>
                         <div class="fw-bold"><?php echo html_escape($user->fullname); ?></div>
-                        <div class="text-body-secondary" style="font-size: smaller;">@<?php echo html_escape($user->username); ?></div>
+                        <div class="text-body-secondary small">@<?php echo html_escape($user->username); ?></div>
                       </td>
-                      <td class="text-body-secondary"><?php echo html_escape($user->email); ?></td>
-                      <td class="text-body-secondary">
+                      <td><?php echo html_escape($user->email); ?></td>
+                      <td>
                         <?php 
                           if (!empty($user->department_id) && isset($departments[$user->department_id])) {
                             echo html_escape($departments[$user->department_id]);
@@ -70,7 +70,7 @@
                           }
                         ?>
                       </td>
-                      <td class="text-body-secondary">
+                      <td>
                         <?php if (isset($user_permissions_map[$user->id]) && !empty($user_permissions_map[$user->id])): ?>
                           <?php foreach ($user_permissions_map[$user->id] as $perm): ?>
                             <span class="badge text-bg-secondary"><?php echo html_escape($perm); ?></span>
@@ -79,8 +79,8 @@
                           <span class="badge text-bg-warning">User does not have any permissions access</span>
                         <?php endif; ?>
                       </td>
-                      <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
-                      <td class="text-body-secondary"><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
+                      <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
+                      <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->updated_at))); ?></td>
                       <td>
                         <?php
                           $session_permissions = $this->session->userdata('permissions');
@@ -113,21 +113,21 @@
       </div>
     </div>
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-fullscreen-sm-down">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+            <h5 class="modal-title" id="deleteModalLabel">Delete user account</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <p class="text-center">Are you sure you want to delete the account with username <strong><span id="usernameToDelete"></span></strong>?</p>
-            <p class="text-center text-danger">This action cannot be undone.</p>
+            <p class="text-center text-danger fw-semibold">This action cannot be undone.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-secondary fw-semibold" data-bs-dismiss="modal">Cancel</button>
             <form id="deleteUserForm" action="" method="post" style="display: inline;">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-              <button type="submit" class="btn btn-danger" id="buttonDeleteUser">
+              <button type="submit" class="btn btn-danger fw-semibold" id="buttonDeleteUser">
                 <span id="buttonDeleteUserText">Delete</span>
                 <span id="buttonDeleteUserSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
               </button>
@@ -136,7 +136,6 @@
         </div>
       </div>
     </div>
-    <!-- End Modal -->
     <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery-3.7.1.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/dataTables.min.js'); ?>"></script>

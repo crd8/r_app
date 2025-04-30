@@ -59,7 +59,7 @@
                   <select class="form-control <?php echo form_error('department') ? 'is-invalid' : ''; ?>" id="department" name="department">
                     <option value="">Select Department</option>
                     <?php foreach ($departments as $department): ?>
-                      <option value="<?php echo html_escape($department->id); ?>" 
+                      <option value="<?php echo html_escape($department->id); ?>"
                         <?php echo set_value('department') == $department->id ? 'selected' : ''; ?>>
                         <?php echo html_escape($department->name); ?>
                       </option>
@@ -86,7 +86,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label">Permissions</label>
+                <h6>Permissions Access</h6>
                 <?php
                   $grouped_permissions = [];
 
@@ -111,8 +111,8 @@
                 <div class="row">
                   <?php foreach ($grouped_permissions as $group => $permissions): ?>
                     <div class="col-md-4">
-                      <h6 class="mt-3"><?php echo html_escape($group); ?></h6>
                       <div class="mb-3 bg-body-tertiary p-3 rounded-2">
+                        <h6 class="fw-semibold text-body-secondary"><?php echo html_escape($group); ?></h6>
                         <?php foreach ($permissions as $permission): ?>
                           <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="permission-<?php echo $permission->id; ?>" name="permissions[]" value="<?php echo $permission->id; ?>" <?php echo (in_array($permission->id, $user_permissions)) ? 'checked' : ''; ?>>
@@ -130,7 +130,7 @@
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg fw-semibold mt-3" id="createButton">
                   <span id="createUserButtonText">Create</span>
-                  <span id="createUserButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  <output id="createUserButtonSpinner" class="spinner-border spinner-border-sm d-none" aria-live="polite" aria-hidden="true"></output>
                 </button>
               </div>
             </form>

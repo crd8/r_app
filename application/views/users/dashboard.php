@@ -79,7 +79,7 @@
                       <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                       <button type="submit" class="btn btn-danger btn-sm fw-semibold" id="forceLogoutButton">
                         <span id="forceLogoutButtonText"><i class="bi bi-box-arrow-left"></i> Force Logout</span>
-                        <span id="forceLogoutButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <output id="forceLogoutButtonSpinner" class="spinner-border spinner-border-sm d-none" aria-live="polite" aria-hidden="true"></output>
                       </button>
                     </form>
                     <?php endif; ?>

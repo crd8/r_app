@@ -51,18 +51,17 @@
                       Remember me
                     </label>
                   </div>
-                  <!-- <a href="" class="link-primary text-decoration-none">Forgot password?</a> -->
                 </div>
                 <div class="d-grid gap-2 mb-3">
                   <button type="submit" class="btn btn-lg fw-semibold btn-primary" id="loginButton">
                     <span id="loginButtonText">Log in</span>
-                    <span id="loginButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    <output id="loginButtonSpinner" class="spinner-border spinner-border-sm d-none" aria-live="polite" aria-hidden="true"></output>
                   </button>
                 </div>
               </form>
             </div>
           </div>
-        </div>      
+        </div>
       </div>
     </section>
 

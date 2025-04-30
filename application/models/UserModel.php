@@ -1,7 +1,7 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
-class User_model extends CI_Model {
+class UserModel extends CI_Model {
 
   public function get_all_users() {
     $this->db->order_by('created_at', 'DESC');
@@ -24,7 +24,7 @@ class User_model extends CI_Model {
   }
 
   public function get_logged_in_users() {
-    $this->db->where('is_logged_in', TRUE);
+    $this->db->where('is_logged_in', true);
     $query = $this->db->get('users');
     return $query->result();
   }
@@ -107,4 +107,3 @@ class User_model extends CI_Model {
     }
   }
 }
-?>

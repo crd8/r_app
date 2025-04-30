@@ -27,10 +27,12 @@
         </li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?php echo site_url('profile'); ?>">Profile</a></li>
-        <form action="<?php echo site_url('logout'); ?>" method="post" id="logoutForm" style="display: none;">
-          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-        </form>
-        <li><a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Sign out</a></li>
+        <li>
+          <form action="<?= site_url('logout'); ?>" method="post" id="logoutForm" style="display: inline;">
+            <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" />
+            <button type="submit" class="dropdown-item">Sign out</button>
+          </form>
+        </li>
       </ul>
     </div>
     
@@ -45,9 +47,9 @@
             <a class="nav-link <?php echo ($this->uri->segment(1) == 'dashboard') ? 'active' : ''; ?>" aria-current="page" href="<?php echo site_url('dashboard'); ?>">Dashboard</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle <?php echo (in_array($this->uri->segment(1), ['users', 'permissions'])) ? 'active' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="nav-link dropdown-toggle <?php echo (in_array($this->uri->segment(1), ['users','permissions'])) ? 'active' : ''; ?>" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Administrator
-            </a>
+            </button>
             <ul class="dropdown-menu">
               <?php
                 $permissions = $this->session->userdata('permissions');
@@ -74,24 +76,11 @@
     </div>
   </div>
 </nav>
-<!-- <div class="container mt-5 pt-4">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="<?php echo site_url('users/dashboard'); ?>">Dashboard</a></li>
-      <?php if ($this->uri->segment(2) == 'permissions'): ?>
-        <li class="breadcrumb-item active" aria-current="page">Permissions</li>
-      <?php elseif ($this->uri->segment(2) == 'edit_profile'): ?>
-        <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
-      <?php endif; ?>
-    </ol>
-  </nav>
-</div> -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var darkModeToggle = document.getElementById('darkModeToggle');
     var htmlElement = document.documentElement;
 
-    // light or dark mode
     if (localStorage.getItem('theme') === 'dark') {
       htmlElement.setAttribute('data-bs-theme', 'dark');
       darkModeToggle.classList.remove('bi-moon-stars-fill');

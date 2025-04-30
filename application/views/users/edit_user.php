@@ -86,7 +86,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label">Permissions</label>
+                <h6>Permissions Access</h6>
                 <?php
                   $grouped = [];
                   foreach ($all_permissions as $p) {
@@ -107,8 +107,8 @@
                 <div class="row">
                   <?php foreach ($grouped as $grp=>$perms): ?>
                     <div class="col-md-4">
-                      <h6 class="mt-3"><?php echo html_escape($grp); ?></h6>
                       <div class="mb-3 bg-body-tertiary p-3 rounded-2">
+                        <h6 class="fw-semibold text-body-secondary"><?php echo html_escape($grp); ?></h6>
                         <?php foreach ($perms as $perm): ?>
                           <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="permission-<?php echo $perm->id; ?>" name="permissions[]" value="<?php echo $perm->id; ?>" <?php echo set_checkbox('permissions[]', $perm->id, in_array($perm->id, $user_permissions)); ?>>
@@ -125,7 +125,7 @@
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg fw-semibold mt-3" id="updateButton">
                   <span id="UpdateUserButtonText">Update</span>
-                  <span id="updateUserButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  <output id="updateUserButtonSpinner" class="spinner-border spinner-border-sm d-none" aria-live="polite" aria-hidden="true"></output>
                 </button>
               </div>
             </form>

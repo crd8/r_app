@@ -62,21 +62,21 @@
                       </td>
                       <td><?php echo html_escape($user->email); ?></td>
                       <td>
-                        <?php 
+                        <?php
                           if (!empty($user->department_id) && isset($departments[$user->department_id])) {
                             echo html_escape($departments[$user->department_id]);
                           } else {
-                            echo '<span class="badge text-bg-warning">User does not have any departments yet</span>';
+                            echo '<span class="badge text-bg-info">User does not have any departments yet</span>';
                           }
                         ?>
                       </td>
                       <td>
                         <?php if (isset($user_permissions_map[$user->id]) && !empty($user_permissions_map[$user->id])): ?>
                           <?php foreach ($user_permissions_map[$user->id] as $perm): ?>
-                            <span class="badge text-bg-secondary"><?php echo html_escape($perm); ?></span>
+                            <span class="badge text-bg-success"><?php echo html_escape($perm); ?></span>
                           <?php endforeach; ?>
                         <?php else: ?>
-                          <span class="badge text-bg-warning">User does not have any permissions access</span>
+                          <span class="badge text-bg-info">User does not have any permissions access</span>
                         <?php endif; ?>
                       </td>
                       <td><?php echo html_escape(date('d F Y, H:i:s', strtotime($user->created_at))); ?></td>
@@ -129,7 +129,7 @@
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <button type="submit" class="btn btn-danger fw-semibold" id="buttonDeleteUser">
                 <span id="buttonDeleteUserText">Delete</span>
-                <span id="buttonDeleteUserSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <output id="buttonDeleteUserSpinner" class="spinner-border spinner-border-sm d-none" aria-live="polite" aria-hidden="true"></output>
               </button>
             </form>
           </div>

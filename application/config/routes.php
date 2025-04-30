@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -51,10 +51,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'users/login';
 $route['404_override'] = 'errors/error_404';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = false;
 
 // Custom routes for user & authentication
-$route['register'] = 'users/create';
 $route['login'] = 'users/login';
 $route['users/authenticate'] = 'users/authenticate';
 $route['logout'] = 'users/logout';

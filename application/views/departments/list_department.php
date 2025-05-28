@@ -33,7 +33,7 @@
               </div>
               <?php
                 $session_permissions = $this->session->userdata('permissions');
-                $department_create_permission_id = $this->Permission_model->get_permission_id('department create');
+                $department_create_permission_id = $this->PermissionModel->get_permission_id('department create');
                 if (in_array($department_create_permission_id, $session_permissions)):
               ?>
               <a href="<?php echo site_url('departments/create'); ?>" class="btn btn-primary fw-semibold"><i class="bi bi-plus-circle"></i> Create Department</a>
@@ -62,7 +62,7 @@
                     <td>
                       <?php
                         $session_permissions = $this->session->userdata('permissions');
-                        $department_edit_permission_id = $this->Permission_model->get_permission_id('department edit');
+                        $department_edit_permission_id = $this->PermissionModel->get_permission_id('department edit');
                         if (in_array($department_edit_permission_id, $session_permissions)):
                       ?>
                       <a href="<?php echo site_url('departments/edit/' . $department->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
@@ -71,7 +71,7 @@
                       <?php endif; ?>
                       <?php
                         $session_permissions = $this->session->userdata('permissions');
-                        $department_delete_permission_id = $this->Permission_model->get_permission_id('department delete');
+                        $department_delete_permission_id = $this->PermissionModel->get_permission_id('department delete');
                         if (in_array($department_delete_permission_id, $session_permissions)):
                       ?>
                       <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-departmentid="<?php echo $department->id; ?>" data-name="<?php echo $department->name; ?>">

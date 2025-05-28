@@ -33,7 +33,7 @@
               </div>
               <?php
                 $session_permissions = $this->session->userdata('permissions');
-                $permission_create_permission_id = $this->Permission_model->get_permission_id('permission create');
+                $permission_create_permission_id = $this->PermissionModel->get_permission_id('permission create');
                 if (in_array($permission_create_permission_id, $session_permissions)):
               ?>
                 <a href="<?php echo site_url('permissions/create'); ?>" class="btn btn-primary fw-semibold"><i class="bi bi-shield-plus"></i> Create Permission</a>
@@ -62,7 +62,7 @@
                       <td>
                         <?php
                           $session_permissions = $this->session->userdata('permissions');
-                          $permission_edit_permission_id = $this->Permission_model->get_permission_id('permission edit');
+                          $permission_edit_permission_id = $this->PermissionModel->get_permission_id('permission edit');
                           if (in_array($permission_edit_permission_id, $session_permissions)):
                         ?>
                           <a href="<?php echo site_url('permissions/edit/' . $permission->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
@@ -71,7 +71,7 @@
                         <?php endif; ?>
                         <?php
                           $session_permissions = $this->session->userdata('permissions');
-                          $permission_delete_permission_id = $this->Permission_model->get_permission_id('permission delete');
+                          $permission_delete_permission_id = $this->PermissionModel->get_permission_id('permission delete');
                           if (in_array($permission_delete_permission_id, $session_permissions)):
                         ?>
                           <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-permissionid="<?php echo $permission->id; ?>" data-name="<?php echo $permission->name; ?>">

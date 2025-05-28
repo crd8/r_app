@@ -33,7 +33,7 @@
               </div>
               <?php
                 $session_permissions = $this->session->userdata('permissions');
-                $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+                $user_create_permission_id = $this->PermissionModel->get_permission_id('user create');
                 if (in_array($user_create_permission_id, $session_permissions)):
               ?>
                 <a href="<?php echo site_url('users/create'); ?>" class="btn btn-primary fw-semibold"><i class="bi bi-person-add"></i> Create User</a>
@@ -84,7 +84,7 @@
                       <td>
                         <?php
                           $session_permissions = $this->session->userdata('permissions');
-                          $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+                          $user_edit_permission_id = $this->PermissionModel->get_permission_id('user edit');
                           if (in_array($user_edit_permission_id, $session_permissions)):
                         ?>
                           <a href="<?php echo site_url('users/edit/' . $user->id); ?>" class="link-primary text-decoration-none me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
@@ -93,7 +93,7 @@
                         <?php endif; ?>
                         <?php
                           $session_permissions = $this->session->userdata('permissions');
-                          $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
+                          $user_delete_permission_id = $this->PermissionModel->get_permission_id('user delete');
                           if (in_array($user_delete_permission_id, $session_permissions)):
                         ?>
                           <a href="#" class="text-danger-emphasis text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="<?php echo html_escape($user->id); ?>" data-username="<?php echo html_escape($user->username); ?>">

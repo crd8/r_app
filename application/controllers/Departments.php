@@ -5,8 +5,8 @@ class Departments extends CI_Controller {
   
   public function __construct() {
     parent::__construct();
-    $this->load->model('Department_model');
-    $this->load->model('Permission_model');
+    $this->load->model('DepartmentModel');
+    $this->load->model('PermissionModel');
     $this->load->library('session');
     $this->load->helper('cookie');
     $this->load->library('form_validation');
@@ -22,12 +22,12 @@ class Departments extends CI_Controller {
         redirect(ROUTE_ERROR_403);
     }
 
-    $department_list_permission_id = $this->Permission_model->get_permission_id('department list');
+    $department_list_permission_id = $this->PermissionModel->get_permission_id('department list');
     if (!in_array($department_list_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
 
-    $data['departments'] = $this->Department_model->get_all_departments();
+    $data['departments'] = $this->DepartmentModel->get_all_departments();
 
     $this->load->view('departments/list_department', $data);
   }
@@ -37,7 +37,7 @@ class Departments extends CI_Controller {
       redirect('login');
     }
 
-    $department_create_permission_id = $this->Permission_model->get_permission_id('department create');
+    $department_create_permission_id = $this->PermissionModel->get_permission_id('department create');
     if (!in_array($department_create_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
@@ -46,7 +46,7 @@ class Departments extends CI_Controller {
   }
 
   public function store() {
-    $department_create_permission_id = $this->Permission_model->get_permission_id('department create');
+    $department_create_permission_id = $this->PermissionModel->get_permission_id('department create');
     if (!in_array($department_create_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
@@ -69,14 +69,14 @@ class Departments extends CI_Controller {
         'description' => $description,
       );
 
-      $this->Department_model->insert_department($data);
+      $this->DepartmentModel->insert_department($data);
       $this->session->set_flashdata('success', 'Department created successfully');
-      redirect('departments/list');
+      redirect(ROUTE_DEPARTMENTS_LIST);
     }
   }
 
   public function unique_permission_name($name, $id = null) {
-    $u = $this->Department_model->get_department_by_name($name);
+    $u = $this->DepartmentModel->get_department_by_name($name);
     if ($u && $u->id != $id) {
       $this->form_validation->set_message(
         'unique_permission_name',
@@ -92,12 +92,12 @@ class Departments extends CI_Controller {
       redirect('login');
     }
 
-    $data['department'] = $this->Department_model->get_department_by_id($id);
+    $data['department'] = $this->DepartmentModel->get_department_by_id($id);
     if (!$data['department']) {
       redirect('errors/error_404');
     }
 
-    $department_edit_permission_id = $this->Permission_model->get_permission_id('department edit');
+    $department_edit_permission_id = $this->PermissionModel->get_permission_id('department edit');
     if (!in_array($department_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
@@ -106,12 +106,12 @@ class Departments extends CI_Controller {
   }
 
   public function update($id) {
-    $department_edit_permission_id = $this->Permission_model->get_permission_id('department edit');
+    $department_edit_permission_id = $this->PermissionModel->get_permission_id('department edit');
     if (!in_array($department_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
 
-    $department = $this->Department_model->get_department_by_id($id);
+    $department = $this->DepartmentModel->get_department_by_id($id);
     if (!$department) {
       show_404();
     }
@@ -134,10 +134,10 @@ class Departments extends CI_Controller {
         'description'      => $description,
       ];
   
-      $this->Department_model->update_department($id, $update);
+      $this->DepartmentModel->update_department($id, $update);
       
       $this->session->set_flashdata('success', 'Department updated successfully');
-      redirect('departments/list');
+      redirect(ROUTE_DEPARTMENTS_LIST);
     }
   }
 
@@ -150,19 +150,18 @@ class Departments extends CI_Controller {
       redirect('login');
     }
 
-    $data['department'] = $this->Department_model->get_department_by_id($id);
+    $data['department'] = $this->DepartmentModel->get_department_by_id($id);
     if (!$data['department']) {
       redirect('errors/error_404');
     }
 
-    $department_delete_permission_id = $this->Permission_model->get_permission_id('department delete');
+    $department_delete_permission_id = $this->PermissionModel->get_permission_id('department delete');
     if (!in_array($department_delete_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
 
-    $this->Department_model->delete_department($id);
+    $this->DepartmentModel->delete_department($id);
     $this->session->set_flashdata('success', 'Department deleted successfully');
-    redirect('departments/list');
+    redirect(ROUTE_DEPARTMENTS_LIST);
   }
 }
-?>

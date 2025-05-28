@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') || exit('No direct script access allowed');
 
-class Department_model extends CI_Model {
+class DepartmentModel extends CI_Model {
 
   public function get_all_departments() {
     $this->db->order_by('created_at', 'DESC');
@@ -35,4 +35,3 @@ class Department_model extends CI_Model {
     $this->db->delete('departments');
   }
 }
-?>

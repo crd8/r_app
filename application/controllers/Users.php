@@ -6,11 +6,11 @@ class Users extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->model('UserModel');
-    $this->load->model('Department_model');
+    $this->load->model('DepartmentModel');
     $this->load->library('session');
     $this->load->helper('cookie');
     $this->load->library('form_validation');
-    $this->load->model('Permission_model');
+    $this->load->model('PermissionModel');
   }
 
   public function index() {
@@ -23,14 +23,14 @@ class Users extends CI_Controller {
       redirect(ROUTE_ERROR_403);
     }
 
-    $user_list_permission_id = $this->Permission_model->get_permission_id('user list');
+    $user_list_permission_id = $this->PermissionModel->get_permission_id('user list');
     if (!in_array($user_list_permission_id, $userPermissions)) {
       redirect(ROUTE_ERROR_403);
     }
 
     $data['users'] = $this->UserModel->get_all_users();
 
-    $departments = $this->Department_model->get_all_departments();
+    $departments = $this->DepartmentModel->get_all_departments();
     $dept_map = [];
     if (!empty($departments)) {
       foreach ($departments as $dept) {
@@ -94,7 +94,7 @@ class Users extends CI_Controller {
 
       $this->db->where('id', session_id())->update('ci_sessions', ['user_id' => $user->id]);
 
-      $permissions = $this->Permission_model->get_user_permissions($user->id);
+      $permissions = $this->PermissionModel->get_user_permissions($user->id);
       $this->session->set_userdata('permissions', array_column($permissions, 'permission_id'));
 
       if ($remember) {
@@ -156,7 +156,7 @@ class Users extends CI_Controller {
     }
 
     $current_user_id = $this->session->userdata('user_id');
-    $force_logout_permission_id = $this->Permission_model->get_permission_id('force logout');
+    $force_logout_permission_id = $this->PermissionModel->get_permission_id('force logout');
     
     if ($current_user_id != $id && !in_array($force_logout_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
@@ -189,20 +189,20 @@ class Users extends CI_Controller {
       redirect('login');
     }
 
-    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+    $user_create_permission_id = $this->PermissionModel->get_permission_id('user create');
     if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
 
-    $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+    $data['all_permissions'] = $this->PermissionModel->get_all_permissions();
     $data['user_permissions'] = [];
-    $data['departments'] = $this->Department_model->get_all_departments();
+    $data['departments'] = $this->DepartmentModel->get_all_departments();
 
     $this->load->view('users/create_user', $data);
   }
 
   public function store() {
-    $user_create_permission_id = $this->Permission_model->get_permission_id('user create');
+    $user_create_permission_id = $this->PermissionModel->get_permission_id('user create');
     if (!in_array($user_create_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
@@ -211,16 +211,16 @@ class Users extends CI_Controller {
     $this->form_validation->set_rules('fullname', 'Fullname', 'required');
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_unique_email');
     $this->form_validation->set_rules('password', 'Password', 'required');
-    $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
+    $this->form_validation->set_rules('confirm_password', TEXT_CONFIRM_PASSWORD, 'required|matches[password]');
     $this->form_validation->set_rules('department', 'Department Name');
 
     if (!$this->form_validation->run()) {
       $selected_permissions = $this->input->post('permissions') ?: [];
       $data = [
         'errorMessage' => 'Failed to create user account. Please fix the errors below.',
-        'all_permissions' => $this->Permission_model->get_all_permissions(),
+        'all_permissions' => $this->PermissionModel->get_all_permissions(),
         'user_permissions' => $selected_permissions,
-        'departments' => $this->Department_model->get_all_departments(),
+        'departments' => $this->DepartmentModel->get_all_departments(),
       ];
       $this->load->view('users/create_user', $data);
     } else {
@@ -292,14 +292,14 @@ class Users extends CI_Controller {
       redirect('errors/error_404');
     }
 
-    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+    $user_edit_permission_id = $this->PermissionModel->get_permission_id('user edit');
     if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
 
-    $data['all_permissions'] = $this->Permission_model->get_all_permissions();
+    $data['all_permissions'] = $this->PermissionModel->get_all_permissions();
     $data['user_permissions'] = $this->UserModel->get_user_permissions($id);
-    $data['departments'] = $this->Department_model->get_all_departments();
+    $data['departments'] = $this->DepartmentModel->get_all_departments();
     $this->load->view('users/edit_user', $data);
   }
 
@@ -379,7 +379,7 @@ class Users extends CI_Controller {
 
     $this->form_validation->set_rules('current_password', 'Current Password', 'required|callback_validate_current_password');
     $this->form_validation->set_rules('new_password',     'New Password',     'required|min_length[6]');
-    $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[new_password]');
+    $this->form_validation->set_rules('confirm_password', TEXT_CONFIRM_PASSWORD, 'required|matches[new_password]');
 
     if ($this->form_validation->run() === false) {
       $data['password_errors'] = [
@@ -403,7 +403,7 @@ class Users extends CI_Controller {
   }
 
   public function update($id) {
-    $user_edit_permission_id = $this->Permission_model->get_permission_id('user edit');
+    $user_edit_permission_id = $this->PermissionModel->get_permission_id('user edit');
     if (!in_array($user_edit_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }
@@ -417,16 +417,16 @@ class Users extends CI_Controller {
     $this->form_validation->set_rules('fullname', 'Fullname', 'required');
     $this->form_validation->set_rules('email', 'Email', "required|valid_email|callback_unique_email[{$id}]");
     $this->form_validation->set_rules('password', 'Password', 'min_length[6]');
-    $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'matches[password]');
+    $this->form_validation->set_rules('confirm_password', TEXT_CONFIRM_PASSWORD, 'matches[password]');
     $this->form_validation->set_rules('department', 'Department Name');
 
     if (!$this->form_validation->run()) {
       $data = [
         'errorMessage'    => 'Failed to update user. Please fix the errors below.',
         'user'            => $user,
-        'all_permissions' => $this->Permission_model->get_all_permissions(),
+        'all_permissions' => $this->PermissionModel->get_all_permissions(),
         'user_permissions'=> array_column($this->UserModel->get_user_permissions($id),'permission_id'),
-        'departments'     => $this->Department_model->get_all_departments(),
+        'departments'     => $this->DepartmentModel->get_all_departments(),
       ];
       $this->load->view('users/edit_user', $data);
     } else {
@@ -470,7 +470,7 @@ class Users extends CI_Controller {
       redirect('errors/error_404');
     }
 
-    $user_delete_permission_id = $this->Permission_model->get_permission_id('user delete');
+    $user_delete_permission_id = $this->PermissionModel->get_permission_id('user delete');
     if (!in_array($user_delete_permission_id, $this->session->userdata('permissions'))) {
       redirect(ROUTE_ERROR_403);
     }

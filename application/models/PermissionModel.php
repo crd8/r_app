@@ -1,7 +1,7 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
-class Permission_model extends CI_Model {
+class PermissionModel extends CI_Model {
   
   public function get_all_permissions() {
     $this->db->order_by('created_at', 'DESC');
@@ -69,4 +69,3 @@ class Permission_model extends CI_Model {
     $this->db->delete('permissions');
   }
 }
-?>

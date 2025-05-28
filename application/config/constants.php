@@ -3,6 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 define('ROUTE_ERROR_403', 'errors/error_403');
 define('ROUTE_USERS_LIST', 'users/list');
+define('ROUTE_DEPARTMENTS_LIST', 'departments/list');
+
+define('TEXT_CONFIRM_PASSWORD', 'Confirm Password');
+
 
 /*
 |--------------------------------------------------------------------------

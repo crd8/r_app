@@ -33,7 +33,7 @@
                   $session_permissions = $this->session->userdata('permissions');
                   if (!empty($session_permissions)):
                     foreach ($session_permissions as $permission_id):
-                      $permission_name = $this->Permission_model->get_permission_name($permission_id);
+                      $permission_name = $this->PermissionModel->get_permission_name($permission_id);
                     ?>
                       <li class="list-group-item"><span class="badge text-bg-primary"><?php echo html_escape($permission_name); ?></span> | <?php echo html_escape($permission_id); ?></li>
                     <?php
@@ -71,7 +71,7 @@
                     </div>
                     <?php
                       $session_permissions = $this->session->userdata('permissions');
-                      $list_users_permission_id = $this->Permission_model->get_permission_id('force logout');
+                      $list_users_permission_id = $this->PermissionModel->get_permission_id('force logout');
                       if (in_array($list_users_permission_id, $session_permissions)):
                     ?>
                     

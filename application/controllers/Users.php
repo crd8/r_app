@@ -323,7 +323,7 @@ class Users extends CI_Controller {
         'success_profile' => $this->session->flashdata('success_profile'),
         'success_password' => $this->session->flashdata('success_password'),
       ];
-      $this->load->view('users/edit_profile', $data);
+      $this->load->view(VIEW_EDIT_PROFILE, $data);
       return;
     }
 
@@ -359,7 +359,7 @@ class Users extends CI_Controller {
       $data['errorToast'] = 'Failed update user account. Please fix the errors below';
       
       $data['success_profile'] = $this->session->flashdata('success_profile');
-      $this->load->view('users/edit_profile', $data);
+      $this->load->view(VIEW_EDIT_PROFILE, $data);
       return;
     }
     $upd = [
@@ -391,7 +391,7 @@ class Users extends CI_Controller {
       // agar success_profile tetap tersedia
       $data['success_profile']  = $this->session->flashdata('success_profile');
       $data['success_password'] = '';
-      $this->load->view('users/edit_profile', $data);
+      $this->load->view(VIEW_EDIT_PROFILE, $data);
       return;
     }
     $new = $this->input->post('new_password', true);

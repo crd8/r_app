@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
 class Permissions extends CI_Controller {
   
@@ -20,7 +20,7 @@ class Permissions extends CI_Controller {
     $permission_list_permission_id = $this->PermissionModel->get_permission_id('permission list');
 
     if (!in_array($permission_list_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
 
     $data['permissions'] = $this->PermissionModel->get_all_permissions();
@@ -34,7 +34,7 @@ class Permissions extends CI_Controller {
 
     $permission_create_permission_id = $this->PermissionModel->get_permission_id('permission create');
     if (!in_array($permission_create_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
 
     $this->load->view('permissions/create_permission');
@@ -43,20 +43,20 @@ class Permissions extends CI_Controller {
   public function store() {
     $permission_create_permission_id = $this->PermissionModel->get_permission_id('permission create');
     if (!in_array($permission_create_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
 
     $this->form_validation->set_rules('name', 'Permission Name', 'required|callback_unique_permission_name');
     $this->form_validation->set_rules('description', 'Description', 'required');
 
-    if ($this->form_validation->run() == FALSE) {
+    if (!$this->form_validation->run()) {
       $data = [
         'errorMessage'    => 'Failed to create permission. Please fix the errors below.',
       ];
       $this->load->view('permissions/create_permission', $data);
     } else {
-      $name = $this->input->post('name', TRUE);
-      $description = $this->input->post('description', TRUE);
+      $name = $this->input->post('name', true);
+      $description = $this->input->post('description', true);
       $data = array(
         'id' => generate_uuid(),
         'name' => $name,
@@ -65,7 +65,7 @@ class Permissions extends CI_Controller {
 
       $this->PermissionModel->insert_permission($data);
       $this->session->set_flashdata('success', 'Permission created successfully');
-      redirect('permissions/list');
+      redirect(ROUTE_PERMISSIONS_LIST);
     }
   }
 
@@ -76,9 +76,9 @@ class Permissions extends CI_Controller {
         'unique_permission_name',
         'Permission name already exists'
       );
-      return FALSE;
+      return false;
     }
-    return TRUE;
+    return true;
   }
 
   public function edit($id) {
@@ -88,12 +88,12 @@ class Permissions extends CI_Controller {
 
     $data['permission'] = $this->PermissionModel->get_permission_by_id($id);
     if (!$data['permission']) {
-      redirect('errors/error_404');
+      redirect(ROUTE_ERROR_404);
     }
 
     $permission_edit_permission_id = $this->PermissionModel->get_permission_id('permission edit');
     if (!in_array($permission_edit_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
 
     $this->load->view('permissions/edit_permission', $data);
@@ -102,26 +102,26 @@ class Permissions extends CI_Controller {
   public function update($id) {
     $permission_edit_permission_id = $this->PermissionModel->get_permission_id('permission edit');
     if (!in_array($permission_edit_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
 
     $permission = $this->PermissionModel->get_permission_by_id($id);
     if (! $permission) {
-      redirect('errors/error_404');
+      redirect(ROUTE_ERROR_404);
     }
   
     $this->form_validation->set_rules('name', 'Permission Name', "required|callback_unique_permission_name[{$id}]");
     $this->form_validation->set_rules('description', 'Description', 'required');
   
-    if ($this->form_validation->run() == FALSE) {
+    if (!$this->form_validation->run()) {
       $data = [
         'errorMessage' => 'Failed to update permission. Please fix the errors below.',
         'permission' => $permission,
       ];
       $this->load->view('permissions/edit_permission', $data);
     } else {
-      $name = $this->input->post('name', TRUE);
-      $description = $this->input->post('description', TRUE);
+      $name = $this->input->post('name', true);
+      $description = $this->input->post('description', true);
   
       $update = array(
         'name' => $name,
@@ -131,13 +131,13 @@ class Permissions extends CI_Controller {
       $this->PermissionModel->update_permission($id, $update);
       
       $this->session->set_flashdata('success', 'Permission updated successfully');
-      redirect('permissions/list');
+      redirect(ROUTE_PERMISSIONS_LIST);
     }
   }
 
   public function delete($id) {
     if ($this->input->server('REQUEST_METHOD') !== 'POST') {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
     
     if (!$this->session->userdata('user_id')) {
@@ -146,17 +146,16 @@ class Permissions extends CI_Controller {
 
     $data['permission'] = $this->PermissionModel->get_permission_by_id($id);
     if (!$data['permission']) {
-      redirect('errors/error_404');
+      redirect(ROUTE_ERROR_404);
     }
 
     $permission_delete_permission_id = $this->PermissionModel->get_permission_id('permission delete');
     if (!in_array($permission_delete_permission_id, $this->session->userdata('permissions'))) {
-      redirect('errors/error_403');
+      redirect(ROUTE_ERROR_403);
     }
 
     $this->PermissionModel->delete_permission($id);
     $this->session->set_flashdata('success', 'Permission deleted successfully');
-    redirect('permissions/list');
+    redirect(ROUTE_PERMISSIONS_LIST);
   }
 }
-?>

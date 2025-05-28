@@ -31,11 +31,12 @@
             <form method="post" action="<?php echo site_url('users/update/' . $user->id); ?>" id="editUserForm">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <h5 class="card-title">
-                <i class="bi bi-person-fill text-primary"></i> Edit User
+                <i class="bi bi-person-fill-gear"></i> Edit User
               </h5>
               <h6 class="card-subtitle mb-4 text-body-secondary">
                 Update the details below to edit the user account
               </h6>
+              <hr>
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
                   <label for="fullname" class="form-label">Fullname</label>

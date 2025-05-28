@@ -31,11 +31,12 @@
             <form method="post" action="<?php echo site_url('permissions/update/' . $permission->id); ?>" id="editPermsissionForm">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <h5 class="card-title">
-                <i class="bi bi-person-fill text-primary"></i> Edit Permission
+                <i class="bi bi-shield-fill"></i> Edit Permission
               </h5>
               <h6 class="card-subtitle mb-4 text-body-secondary">
                 Update the details below to edit the permission
               </h6>
+              <hr>
               <div class="mb-3">
                 <label for="name" class="form-label">Permission Name</label>
                 <input type="text" class="form-control <?php echo form_error('name') ? 'is-invalid' : ''; ?>" id="name" name="name" value="<?php echo set_value('name', $permission->name); ?>" required>
@@ -49,7 +50,7 @@
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg fw-semibold mt-3" id="updateButton">
                   <span id="UpdatePermissionButtonText">Update</span>
-                  <span id="updatePermissionButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  <output id="updatePermissionButtonSpinner" class="spinner-border spinner-border-sm d-none" aria-alive="polite" aria-hidden="true"></output>
                 </button>
               </div>
             </form>

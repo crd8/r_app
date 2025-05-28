@@ -31,11 +31,12 @@
             <form method="post" action="<?php echo site_url('users/store'); ?>" id="createUserForm">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>"  value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <h5 class="card-title">
-                <i class="bi bi-person-fill-add text-primary"></i> Create a New User
+                <i class="bi bi-person-fill-add"></i> Create a New User
               </h5>
               <h6 class="card-subtitle mb-4 text-body-secondary">
                 Fill in the details below to create a new user account
               </h6>
+              <hr>
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
                   <label for="fullname" class="form-label">Fullname</label>

@@ -28,7 +28,7 @@
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> List of departments</h5>
+                <h5 class="card-title"><i class="bi bi-people-fill"></i> List of departments</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active departments in system</h6>
               </div>
               <?php

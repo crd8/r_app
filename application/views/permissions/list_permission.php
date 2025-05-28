@@ -28,7 +28,7 @@
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h5 class="card-title"><i class="bi bi-shield-shaded text-primary"></i> List of permissions</h5>
+                <h5 class="card-title"><i class="bi bi-shield-lock-fill"></i> List of permissions</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active permissions in system</h6>
               </div>
               <?php
@@ -107,7 +107,7 @@
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
               <button type="submit" class="btn btn-danger fw-semibold" id="buttonDeletePermission">
                 <span id="buttonDeletePermissionText">Delete</span>
-                <span id="buttonDeletePermissionSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <output id="buttonDeletePermissionSpinner" class="spinner-border spinner-border-sm d-none" aria-live="polite" aria-hidden="true"></output>
               </button>
             </form>
           </div>

@@ -28,7 +28,7 @@
           <div class="card-body text-body p-md-4 p-xl-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h5 class="card-title"><i class="bi bi-people-fill text-primary"></i> List of users account</h5>
+                <h5 class="card-title"><i class="bi bi-person-check-fill"></i> List of users account</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">List of active users account in system</h6>
               </div>
               <?php

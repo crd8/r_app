@@ -30,17 +30,18 @@
             </a>
             <form method="post" action="<?php echo site_url('departments/store'); ?>" id="createDepartmentForm">
               <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-              <h5 class="card-title"><i class="bi bi-columns-gap text-primary"></i> Create a New Department</h5>
+              <h5 class="card-title"><i class="bi bi-people-fill"></i> Create a New Department</h5>
               <h6 class="card-subtitle mb-4 text-body-secondary">Fill in the details below to create a new department</h6>
-                <div class="mb-3">
-                  <label for="name" class="form-label">Department name</label>
-                  <input type="text" class="form-control <?php echo form_error('name') ? 'is-invalid' : ''; ?>" id="name" name="name" value="<?php echo html_escape(set_value('name')); ?>" required>
-                  <?php echo form_error('name','<div class="invalid-feedback">','</div>'); ?>
-                </div>
-                <div class="mb-3">
-                  <label for="description" class="form-label">Description</label>
-                  <textarea class="form-control" id="description" name="description" rows="4"><?php echo set_value('description'); ?></textarea>
-                </div>
+              <hr>
+              <div class="mb-3">
+                <label for="name" class="form-label">Department name</label>
+                <input type="text" class="form-control <?php echo form_error('name') ? 'is-invalid' : ''; ?>" id="name" name="name" value="<?php echo html_escape(set_value('name')); ?>" required>
+                <?php echo form_error('name','<div class="invalid-feedback">','</div>'); ?>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4"><?php echo set_value('description'); ?></textarea>
+              </div>
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg fw-semibold mt-3" id="createDepartmentButton">
                   <span id="createDepartmentButtonText">Create</span>
